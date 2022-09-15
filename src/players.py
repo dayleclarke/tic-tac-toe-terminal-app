@@ -6,7 +6,12 @@ from random import choice
 # Classes
 class RangeError(Exception):
     def __init__(self, val):
-        super().__init__(f"{val} is not a valid position on the board- The number must be between 0 and 8 and not already taken.")
+        super().__init__(f"{val} does not represent a valid position on the board. The number you enter must be between 0 and 8 inclusive.")
+
+class OccupiedError(Exception):
+    def __init__(self, val):
+        super().__init__(f"Sorry. Position {val} is already occupied on the board. Please select a position (between 0 and 8) not already taken.")
+
 
 class Player: # Parent Class used for all players (human and computers)
     def __init__(self, letter, name):  #letter is either X or O  # If time could make this emoji's or a symbol chosen by the player. 
@@ -21,28 +26,32 @@ class UserPlayer(Player): # If time add a second player so two people could play
     def __init__(self, letter, name):
         super().__init__(letter, name)
 
-    def get_move(self, game):    
+    def get_move(self):    
         while True:  
             try:
                 val = int(input("Enter an integer (0-8) to indicate where you would like to place a cross: "))
-                if val not in game.free_spots():
+                if not val in range(0, 9):
                     raise RangeError(val)
-                return val
-        # if not user_move in range(0, 9):
-        #     raise RangeError(user_move)
-        # elif user_move not in game.free_spots():           
+                if val not in (3, 4, 5, 7):  #game.free_spots():
+                    raise OccupiedError(val)
+                return val           
             except RangeError as err:
                 print(err)
+            except OccupiedError as err:
+                print(err)
             except ValueError:
-                print("That isn't a valid integer.  Please enter a number between 0 and 8.")
+                print("That isn't a valid integer.  Please enter a number between 0 and 8 (inclusive) with no decimal places.")
 
 if __name__ == '__main__':
     print("Welcome to TicTacToe!")
     player_name = (input("What is your name?: "))
-    print("Hello " + player_name.title() + "! So lovely to meet you.\n")
+    print("Hello " + player_name.title() + "! So lovely to meet you. That's a great name.\n")
     # returns the winner of the game if there is one. 
-    x_player = UserPlayer('X', player_name)
-    
+    user_player_1 = UserPlayer('X', player_name)
+    print(user_player_1.__dict__)
+
+    user_player_1.get_move()
+
     # o_player = GeniusComputerPlayer('O')
     # t = TicTacToe()
     # play(t, x_player, o_player, print_game=True) 
