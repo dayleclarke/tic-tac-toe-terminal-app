@@ -26,13 +26,13 @@ class UserPlayer(Player): # If time add a second player so two people could play
     def __init__(self, letter, name):
         super().__init__(letter, name)
 
-    def get_move(self):    
+    def get_move(self, game):    
         while True:  
             try:
-                val = int(input("Enter an integer (0-8) to indicate where you would like to place a cross: "))
+                val = int(input("Based on the board shown above, enter an integer (0-8) to indicate where you would like to place a cross: "))
                 if not val in range(0, 9): # While this error would be picked up by the next raised error it is helpful for users to know why their number isn't valid.  
                     raise RangeError(val)
-                elif val not in (3, 4, 5, 7):  #game.free_spots():
+                elif val not in game.free_spots():
                     raise OccupiedError(val)
                 return val           
             except RangeError as err:
