@@ -30,9 +30,9 @@ class UserPlayer(Player): # If time add a second player so two people could play
         while True:  
             try:
                 val = int(input("Enter an integer (0-8) to indicate where you would like to place a cross: "))
-                if not val in range(0, 9):
+                if not val in range(0, 9): # While this error would be picked up by the next raised error it is helpful for users to know why their number isn't valid.  
                     raise RangeError(val)
-                if val not in (3, 4, 5, 7):  #game.free_spots():
+                elif val not in (3, 4, 5, 7):  #game.free_spots():
                     raise OccupiedError(val)
                 return val           
             except RangeError as err:
@@ -42,16 +42,20 @@ class UserPlayer(Player): # If time add a second player so two people could play
             except ValueError:
                 print("That isn't a valid integer.  Please enter a number between 0 and 8 (inclusive) with no decimal places.")
 
-if __name__ == '__main__':
-    print("Welcome to TicTacToe!")
-    player_name = (input("What is your name?: "))
-    print("Hello " + player_name.title() + "! So lovely to meet you. That's a great name.\n")
-    # returns the winner of the game if there is one. 
-    user_player_1 = UserPlayer('X', player_name)
-    print(user_player_1.__dict__)
+class EasyComputerPlayer(Player):
+    def __init__(self, letter, name):
+        super().__init__(letter, name)
 
-    user_player_1.get_move()
+    def get_move(self, game): 
+        square = choice(game.free_spots()) #Will select a random square on the board from those that are free. 
+        return square
 
-    # o_player = GeniusComputerPlayer('O')
-    # t = TicTacToe()
-    # play(t, x_player, o_player, print_game=True) 
+# Add another computer player medium difficulty with less logic. 
+# Add an extreme computer player with difficult minimax logic. 
+class GeniusComputerPlayer(Player):
+    def __init__(self, letter, name):
+        super().__init__(letter, name)
+    
+    def get_move(self, game):
+        pass
+
