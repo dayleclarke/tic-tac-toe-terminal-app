@@ -24,13 +24,24 @@ class TicTacToe:
         print("-------------")
             
     def free_spots(self):
-        return [i for i, spot in enumerate(self.board) if spot == ' '] #List comprehension outlining all the free spots available on the board. 
-    
-def play(game):
-    print('Commencing game....')
-    move = user_player_1.get_move(game)
-    print(move)
+        return [i for i, spot in enumerate(self.board) if spot == ' '] #List comprehension outlining all the free spots available on the board.    
 
+    def make_move(self, player, letter):
+        position = player.get_move(self)
+        self.board[position] = letter
+        print(f"{player.name} makes a move to position {position}")
+        self.print_board()
+
+def play(game, x_player, y_player):
+    print('Commencing game....')
+    # Add in option here to play scissor, paper rock to decide who goes first. 
+    while game.free_spots():
+        game.make_move(x_player, "X")
+        if game.free_spots():
+            game.make_move(y_player, "O")           
+
+
+            
 
 
 def select_opponent():
@@ -59,11 +70,6 @@ def select_opponent():
 
 
 
-    
-
-
-
-
 if __name__ == '__main__':
     print("Welcome to TicTacToe!\n")
     player_name = (input("What is your name?: "))
@@ -79,7 +85,7 @@ if __name__ == '__main__':
     print(f"You have selected {opponent.name} as your opponent today.  Good choice.")
     print("Our game will be played on a 3 by 3 board using the following positions.\n")
     standard_board.number_chart()   
-    play(standard_board)
+    play(standard_board, user_player_1, opponent)
     
 
 
