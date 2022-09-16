@@ -1,4 +1,3 @@
-from sysconfig import get_scheme_names
 from players import UserPlayer, EasyComputerPlayer, GeniusComputerPlayer 
 import time
 
@@ -61,9 +60,14 @@ class TicTacToe:
         
         # If all checks fail there is no winner return False
         return False
+    def reset_board(self):
+        self.board = [' ' for i in range(9)]  #we will use a singe list to rep 3x3 board
+        self.current_winner = None
+
 
 def play(game, x_player, y_player):
     print('Commencing game....')
+
     # Add in option here to play scissor, paper rock to decide who goes first. 
     while game.free_spots():
         game.make_move(x_player, "X")
@@ -71,6 +75,7 @@ def play(game, x_player, y_player):
             print("Congratulations!! You won the game!")
             break
         elif game.free_spots():
+            time.sleep(1)
             game.make_move(y_player, "O") 
             if game.current_winner:
                 print(f"Better luck next time! {y_player.name} won the game this time.")
@@ -80,7 +85,7 @@ def play(game, x_player, y_player):
          
 def select_opponent():
     print("Lots of players are around around today who would love to play Tic-Tac-Toe with you.\n")
-    time.sleep(2)
+    time.sleep(0.8)
 
     while True:
         selection = input("Select from the following opponents:\n a) Peter the Panda\n b) Katie the Koala\n c) Ollie the Octopus\n d) Danni the Dolphin\n\nEnter a single letter from (a-d) ")
@@ -99,10 +104,7 @@ def select_opponent():
         return ollie_octopus
     else:
         return danni_dolphin
-    
-
-
-
+  
 
 if __name__ == '__main__':
     print("Welcome to TicTacToe!\n")
@@ -115,19 +117,23 @@ if __name__ == '__main__':
     ollie_octopus = GeniusComputerPlayer('O', "Ollie the Octopus")
     danni_dolphin = GeniusComputerPlayer('O', "Danni the Dolphin")
     standard_board = TicTacToe()
-    opponent = select_opponent()
-    print(f"You have selected {opponent.name} as your opponent today.  Good choice.")
-    print("Our game will be played on a 3 by 3 board using the following positions.\n")
-    standard_board.number_chart()   
-    play(standard_board, user_player_1, opponent)
+    while True:
+        standard_board.reset_board() 
+        opponent = select_opponent()
+        print(f"You have selected {opponent.name} as your opponent today.  Good choice.")
+        print("Our game will be played on a 3 by 3 board using the following positions.\n")
+        standard_board.number_chart()   
+        play(standard_board, user_player_1, opponent)
+        play_again = input("Thanks for playing today. Would you like to play again? (yes/no): ")
+        if play_again.lower().strip().startswith('y'):
+            continue
+        else:
+            break
+
+
     
 
 
 
 
 
-   
-    # returns the winner of the game if there is one. 
-    # o_player = GeniusComputerPlayer('O')
-    # t = TicTacToe()
-    # play(t, x_player, o_player, print_game=True) 
