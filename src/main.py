@@ -31,19 +31,53 @@ class TicTacToe:
         self.board[position] = letter
         print(f"{player.name} makes a move to position {position}")
         self.print_board()
+        if self.winner(position, letter):
+            self.current_winner = player
+    
+    def winner(self, position, letter):
+        # winner if 3 in a row anywhere. Must check row, column and both diagonals
+        #row check       
+        row_index = position // 3 # how many times is the position index divisable by 3?  This will indicate its row (either 0, 1 or 2). 
+        row = self.board[row_index * 3 : (row_index + 1) * 3] # This selects the entire row that the position is in. 
+        if all([square == letter for square in row]):
+            return True
+        
+        #column check
+        col_index = position % 3 # When you divide the position by 3 what is left over? (Position modu 3 will indicate its column index (either 0, 1 or 2))
+        column = [self.board[col_index + i * 3] for i in range(3)]
+        if all([square == letter for square in column]):
+            return True
+        
+        #diagonal check
+        #diagonals left to right are on (0, 4, 8)
+        #diagonals right to left are on (2, 4, 6)
+        if position % 2 == 0: # Only even numbers run along the diagonal
+            diagonal1 = [self.board[i] for i in [0, 4, 8]]
+            if all([square == letter for square in diagonal1]):
+                return True           
+            diagonal2= [self.board[i] for i in [2, 4, 6]]
+            if all([square == letter for square in diagonal2]):
+                return True
+        
+        # If all checks fail there is no winner return False
+        return False
 
 def play(game, x_player, y_player):
     print('Commencing game....')
     # Add in option here to play scissor, paper rock to decide who goes first. 
     while game.free_spots():
         game.make_move(x_player, "X")
-        if game.free_spots():
-            game.make_move(y_player, "O")           
-
-
-            
-
-
+        if game.current_winner:
+            print("Congratulations!! You won the game!")
+            break
+        elif game.free_spots():
+            game.make_move(y_player, "O") 
+            if game.current_winner:
+                print(f"Better luck next time! {y_player.name} won the game this time.")
+                break 
+    else:
+        print("It's a tie!") 
+         
 def select_opponent():
     print("Lots of players are around around today who would love to play Tic-Tac-Toe with you.\n")
     time.sleep(2)
