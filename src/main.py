@@ -1,4 +1,4 @@
-from players import UserPlayer, EasyComputerPlayer, GeniusComputerPlayer 
+from players import UserPlayer, EasyComputerPlayer, ExpertComputerPlayer 
 import time
 
 class TicTacToe:
@@ -23,7 +23,13 @@ class TicTacToe:
         print("-------------")
             
     def free_spots(self):
-        return [i for i, spot in enumerate(self.board) if spot == ' '] #List comprehension outlining all the free spots available on the board.    
+        return [i for i, spot in enumerate(self.board) if spot == ' '] #List comprehension outlining all the free spots available on the board.   
+    
+    def empty_squares(self):
+        return " " in self.board
+    
+    def num_empty_squares(self):
+        return self.board.count(' ') 
 
     def make_move(self, player, letter):
         position = player.get_move(self)
@@ -65,7 +71,7 @@ class TicTacToe:
         self.current_winner = None
 
 
-def play(game, x_player, y_player):
+def play(game, x_player, o_player):
     print('Commencing game....')
 
     # Add in option here to play scissor, paper rock to decide who goes first. 
@@ -76,9 +82,9 @@ def play(game, x_player, y_player):
             break
         elif game.free_spots():
             time.sleep(1)
-            game.make_move(y_player, "O") 
+            game.make_move(o_player, "O") 
             if game.current_winner:
-                print(f"Better luck next time! {y_player.name} won the game this time.")
+                print(f"Better luck next time! {o_player.name} won the game this time.")
                 break 
     else:
         print("It's a tie!") 
@@ -114,8 +120,8 @@ if __name__ == '__main__':
     user_player_1 = UserPlayer('X', player_name)
     pete_panda = EasyComputerPlayer('O', "Pete the Panda")
     katie_koala = EasyComputerPlayer('O', "Katie the Koala")
-    ollie_octopus = GeniusComputerPlayer('O', "Ollie the Octopus")
-    danni_dolphin = GeniusComputerPlayer('O', "Danni the Dolphin")
+    ollie_octopus = ExpertComputerPlayer('O', "Ollie the Octopus")
+    danni_dolphin = ExpertComputerPlayer('O', "Danni the Dolphin")
     standard_board = TicTacToe()
     while True:
         standard_board.reset_board() 

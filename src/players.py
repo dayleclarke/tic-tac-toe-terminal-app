@@ -52,10 +52,62 @@ class EasyComputerPlayer(Player):
 
 # Add another computer player medium difficulty with less logic. 
 # Add an extreme computer player with difficult minimax logic. 
-class GeniusComputerPlayer(Player):
+# Utility function = (the remaining squares on the board + 1) * by either + 1 or -1 depending on if you won. If the tree ends in a draw there is a zero.   The more empty squares the more ideal the position. 
+
+    # place a marker on the board in every possible position. 
+class ExpertComputerPlayer(Player):
     def __init__(self, letter, name):
         super().__init__(letter, name)
-    
+       
     def get_move(self, game):
-        pass
+        if len(game.free_spots()) == 9:
+            square = choice(0, 2, 6, 8) # If O is going first it will select one of the courners
+        else:
+            # get the square based off the minimax algorithm 
+            square = self.minimax(game, self.letter)['position']
+        return square
+    # Utility function = (the remaining squares on the board + 1) * by either + 1 or -1 depending on if you won. If the tree ends in a draw there is a zero.   The more empty squares the more ideal the position. 
 
+    # place a marker on the board in every possible position. 
+    def minimax(self, state, current_player): # Three parameters: self(the Hardcomputerplayer), state is the current state of the board in the simulation and current_player is the player who's turn it currently is. 
+        maximiser = self.letter
+        waiting_player = "O" if current_player == "X" else "X" 
+
+        # first we want to check if the previous move is a winner
+        # this is our base case
+        if state.current_winner == waiting_player:
+            #we return position and score to keep track of the score
+            # for minimax to work
+            return {"position": None,
+                    "score": 1 * (state.num_empty_squares() + 1) if waiting_player == maximiser else -1 *(
+                        state.num_empty_squares() + 1)
+                    }
+
+        elif not state.empty_squares(): 
+            return {"position": None, "score": 0}
+
+        # initialise some dictionaries
+        if current_player == maximiser: 
+            best = {"position": None, "score": -math.inf}   # The maximiser will beat this super low score each time until the highest utility score is achieved
+        else:
+            best = {"position": None, "score": math.inf} # This will allow the mimimiser to try an minimise this.  
+        
+        for possible_move in state.free_spots():  # loop through all the possible moves in the blank spaces that are free
+            state.make_move(possible_move, current_player) #make a move and see what score it is.  
+            # step 2: recurse using minimax to simulate a game after making that move
+            sim_score = self.minimax(state, waiting_player)  # This calls the minimax function on each of the positions. 
+            
+            # step 3: Undo the move
+            state.board[possible_move] = ' ' #Return the position to be empty as we are just testing it. 
+            state.current_winner = None  # Return the current winner back to none in case there was one. 
+            sim_score['position'] = possible_move
+
+            # step 4: updates the dictionaries if necessary
+            if current_player == maximiser:
+                if sim_score['score'] > best['score']:
+                    best = sim_score
+            else:
+                if sim_score['score'] < best['score']:
+                    best = sim_score
+        
+        return best
