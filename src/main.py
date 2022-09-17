@@ -38,7 +38,15 @@ class TicTacToe:
         self.print_board()
         if self.winner(position, letter):
             self.current_winner = player
-    
+
+    def test_move(self, possible_move, player_letter):
+        if self.board[possible_move] == ' ':
+            self.board[possible_move] = player_letter
+        if self.winner(possible_move, player_letter):
+            return True
+        else: 
+            return False
+           
     def winner(self, position, letter):
         # winner if 3 in a row anywhere. Must check row, column and both diagonals
         #row check       
