@@ -32,7 +32,7 @@ class UserPlayer(Player): # If time add a second player so two people could play
                 val = int(input("Based on the board shown above, enter an integer (0-8) to indicate where you would like to place a cross: "))
                 if not val in range(0, 9): # While this error would be picked up by the next raised error it is helpful for users to know why their number isn't valid.  
                     raise RangeError(val)
-                elif val not in game.free_spots():
+                elif val not in game.free_positions():
                     raise OccupiedError(val)
                 return val           
             except RangeError as err:
@@ -47,8 +47,8 @@ class EasyComputerPlayer(Player):
         super().__init__(letter, name)
 
     def get_move(self, game): 
-        square = choice(game.free_spots()) #Will select a random square on the board from those that are free. 
-        return square
+        position = choice(game.free_positions()) #Will select a random square on the board from those that are free. 
+        return position
 
 # Add another computer player medium difficulty with less logic. 
 # Add an extreme computer player with difficult minimax logic. 
@@ -60,7 +60,7 @@ class ExpertComputerPlayer(Player):
         super().__init__(letter, name)
        
     def get_move(self, game):
-        if len(game.free_spots()) == 9:
+        if len(game.free_positions()) == 9:
             square = choice(0, 2, 6, 8) # If O is going first it will select one of the courners
         else:
             # get the square based off the minimax algorithm called in the function below.
@@ -70,31 +70,30 @@ class ExpertComputerPlayer(Player):
 
     # place a marker on the board in every possible position. 
     def minimax(self, state, current_player_letter): # Three parameters: self(the Hardcomputerplayer), state is the current state of the board in the simulation and current_player is the player who's turn it currently is. 
-        maximiser = self.letter
-        waiting_player = "O" if current_player_letter == "X" else "X" 
+        maximiser = self.letter # The ExpectComputerPlay is always wanting to achieve the highest possible utility value. 
+        waiting_player_letter = "O" if current_player_letter == "X" else "X" 
         # first we want to check if the previous move is a winner
         # this is our base case
-        if state.current_winner == waiting_player:
+        if state.current_winner == waiting_player_letter:
             #we return position and score to keep track of the score
             # for minimax to work
             return {"position": None,
-                    "score": 1 * (state.num_empty_squares() + 1) if waiting_player == maximiser else -1 *(
+                    "score": 1 * (state.num_empty_squares() + 1) if waiting_player_letter == maximiser else -1 *(
                         state.num_empty_squares() + 1)
                     }
-
         elif not state.empty_squares(): 
             return {"position": None, "score": 0}
 
         # initialise some dictionaries
         if current_player_letter == maximiser: 
-            best = {"position": None, "score": -math.inf}   # The maximiser will beat this super low score each time until the highest utility score is achieved
+            best = {"position": None, "score": -math.inf}   # The maximiser will beat this super low score each time until the highest utility score is achieved. As the maximiser we want the highest utility score possible. 
         else:
-            best = {"position": None, "score": math.inf} # This will allow the mimimiser to try and minimise this.  
+            best = {"position": None, "score": math.inf} # This will allow the mimimiser to try and minimise this value. (Becuase they want to win the minimisor will chose the value with the lowest utility score)  
         
-        for possible_move in state.free_spots():  # loop through all the possible moves in the blank spaces that are free
-            state.test_move(possible_move, current_player_letter) #make a move and see what score it is.  
+        for possible_move in state.free_positions():  # loop through all the possible moves in the blank spaces that are free
+            state.make_move(possible_move, current_player_letter) #make a move and see what score it is.  
             # step 2: recurse using minimax to simulate a game after making that move
-            sim_score = self.minimax(state, waiting_player)  # This calls the minimax function on each of the positions. 
+            sim_score = self.minimax(state, waiting_player_letter)  # This calls the minimax function on each of the positions. 
             
             # step 3: Undo the move
             state.board[possible_move] = ' ' #Return the position to be empty as we are just testing it. 
