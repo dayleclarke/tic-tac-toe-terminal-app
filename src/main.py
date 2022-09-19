@@ -1,4 +1,5 @@
 from players import UserPlayer, EasyComputerPlayer, ExpertComputerPlayer 
+from random import choice
 import time
 
 class TicTacToe:
@@ -77,10 +78,73 @@ class TicTacToe:
         self.board = [' ' for i in range(9)]  #we will use a singe list to rep 3x3 board
         self.current_winner = None
 
+def select_starting_player(user_player, computer_player):
+    print("To begin we will play a quick game of scissors, paper, rock to determine which player will start. ") 
+    hand_gestures = {
+      "rock": """
+    _______
+---'   ____)
+      (_____)
+      (_____)
+      (____)
+---.__(___)
+""",
+"paper": """
+    _______
+---'   ____)____
+          ______)
+          _______)
+         _______)
+---.__________)
+""",
+"scissors": """
+    _______
+---'   ____)____
+          ______)
+       __________)
+      (____)
+---.__(___)
+"""
+  }
+    while True:
+        user_choice = input("Would you like to play rock, paper or scissors? ").lower().strip()
+        time.sleep(0.8)
+        print(hand_gestures[user_choice])
+        print(f"{user_player} has chosen to play {user_choice}.")
+        opponent_choice = choice(list(hand_gestures.keys()))
+        time.sleep(0.8)
+        print(hand_gestures[opponent_choice])
+        print(f"{computer_player} has chosen to play {opponent_choice}.")
+        time.sleep(0.8)
+        if user_choice == opponent_choice: 
+            print(f"Great minds think alike! You both selected {user_choice}. Please select again.")
+            continue
+        else:
+            break
+
+    if user_choice == "paper":
+        if opponent_choice == "scissors":
+            print(f"{computer_player}'s scissors cuts {user_player}'s paper. {computer_player} wins and will go first!")
+            return computer_player
+        elif opponent_choice == "rock":
+            print(f"{user_player}'s paper covers {computer_player}'s scissors. {user_player} wins and will go first!")
+    
+    if user_choice == "scissors":
+        if opponent_choice == "paper":
+            print(f"{user_player}'s scissors cuts {computer_player}'s paper. {user_player} wins and will go first!")
+        elif opponent_choice == "rock":
+            print(f"{computer_player}'s rock crushes {user_player}'s scissors. {computer_player} wins and will go first!")
+            return computer_player
+
+    if user_choice == "rock":
+        if opponent_choice == "paper":
+            print(f"{computer_player}'s paper covers {user_player}'s rock. {computer_player} wins and will go first!")
+            return computer_player
+        elif opponent_choice == "scissors":
+             print(f"{user_player}'s rock crushes {computer_player}'s scissors. {user_player} wins and will go first!")
 
 def play(game, x_player, o_player):
     print('Commencing game....')
-
     # Add in option here to play scissor, paper rock to decide who goes first. 
     while game.free_positions():
         position = x_player.get_move(game)
@@ -148,6 +212,7 @@ if __name__ == '__main__':
         standard_board.reset_board() 
         opponent = select_opponent()
         print(f"You have selected {opponent.name} as your opponent today.  Good choice.")
+        select_starting_player(user_player_1.name, opponent.name)
         print("Our game will be played on a 3 by 3 board using the following positions.\n")
         standard_board.board_number_indices()   
         play(standard_board, user_player_1, opponent)
