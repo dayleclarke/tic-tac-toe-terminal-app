@@ -63,7 +63,7 @@ class ExpertComputerPlayer(Player):
             # get the square based off the minimax algorithm called in the function below.
             return self.minimax(game, True)['position']
       
-    def minimax(self,state, isMax):
+    def minimax(self,state, is_maximising):
         maximising_letter = self.letter
         minimising_letter = "X"
         if state.current_winner:
@@ -74,7 +74,7 @@ class ExpertComputerPlayer(Player):
         elif not state.free_positions(): 
             return {"position": None, "score": 0} 
 
-        if isMax:
+        if is_maximising:
             best_move = {"position": None, "score": -500}   # The maximiser will beat this super low score each time until the highest utility score is achieved. As the maximiser we want the highest utility score possible. 
             for possible_move in state.free_positions():  # loop through all the possible moves in the blank spaces that are free
                 state.make_move(possible_move, maximising_letter) #make a move and see what score it is.  
