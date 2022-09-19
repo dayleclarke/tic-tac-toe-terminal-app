@@ -58,7 +58,7 @@ class ExpertComputerPlayer(Player):
        
     def get_move(self, game):
         if len(game.free_positions()) == 9:
-            return choice(0, 2, 6, 8) # If O is going first it will select one of the courners
+            return choice([0, 2, 6, 8]) # If O is going first it will select one of the courners
         else:
             # get the square based off the minimax algorithm called in the function below.
             return self.minimax(game, True)['position']

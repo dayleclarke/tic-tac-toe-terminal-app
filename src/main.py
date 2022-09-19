@@ -128,13 +128,16 @@ def select_starting_player(user_player, computer_player):
             return computer_player
         elif opponent_choice == "rock":
             print(f"{user_player}'s paper covers {computer_player}'s scissors. {user_player} wins and will go first!")
+            return user_player
     
     if user_choice == "scissors":
         if opponent_choice == "paper":
             print(f"{user_player}'s scissors cuts {computer_player}'s paper. {user_player} wins and will go first!")
+            return user_player
         elif opponent_choice == "rock":
             print(f"{computer_player}'s rock crushes {user_player}'s scissors. {computer_player} wins and will go first!")
             return computer_player
+
 
     if user_choice == "rock":
         if opponent_choice == "paper":
@@ -142,20 +145,28 @@ def select_starting_player(user_player, computer_player):
             return computer_player
         elif opponent_choice == "scissors":
              print(f"{user_player}'s rock crushes {computer_player}'s scissors. {user_player} wins and will go first!")
+             return user_player
 
 def play(game, x_player, o_player):
+    turn = select_starting_player(user_player_1.name, opponent.name)
+    print("Turn variable:", turn)
+    print("X_player- value", x_player.name)
+    print("Our game will be played on a 3 by 3 board using the following positions.\n")
+    standard_board.board_number_indices()  
     print('Commencing game....')
     # Add in option here to play scissor, paper rock to decide who goes first. 
     while game.free_positions():
-        position = x_player.get_move(game)
-        game.make_move(position, "X")
-        print(f"{x_player.name} makes a move to position {position}")
-        game.print_board()
-
-        if game.current_winner:
-            print("Congratulations!! You won the game!")
-            break
-        elif game.free_positions():
+        if turn == x_player.name:
+            position = x_player.get_move(game)
+            game.make_move(position, "X")
+            print(f"{x_player.name} makes a move to position {position}")
+            game.print_board()
+            if game.current_winner:
+                print("Congratulations!! You won the game!")   
+                break
+            turn = o_player.name
+            continue
+        elif turn == o_player.name:
             time.sleep(1)
             position = o_player.get_move(game)
             game.make_move(position, "O") 
@@ -163,7 +174,9 @@ def play(game, x_player, o_player):
             game.print_board()
             if game.current_winner:
                 print(f"Better luck next time! {o_player.name} won the game this time.")
-                break 
+                break
+            turn = x_player.name
+            continue 
     else:
         print("It's a tie!") 
     # def make_move(self, player, letter):
@@ -211,10 +224,7 @@ if __name__ == '__main__':
     while True:
         standard_board.reset_board() 
         opponent = select_opponent()
-        print(f"You have selected {opponent.name} as your opponent today.  Good choice.")
-        select_starting_player(user_player_1.name, opponent.name)
-        print("Our game will be played on a 3 by 3 board using the following positions.\n")
-        standard_board.board_number_indices()   
+        print(f"You have selected {opponent.name} as your opponent today.  Good choice.") 
         play(standard_board, user_player_1, opponent)
         play_again = input("Thanks for playing today. Would you like to play again? (yes/no): ")
         if play_again.lower().strip().startswith('y'):
