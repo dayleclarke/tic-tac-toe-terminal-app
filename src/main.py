@@ -5,6 +5,7 @@ import pyfiglet
 from simple_term_menu import TerminalMenu
 import clearing
 import csv
+import pandas as pd 
 
 
 class TicTacToe:
@@ -202,7 +203,11 @@ def select_opponent():
     with open("player_scores.csv", "r") as csv_file:
         reader = csv.DictReader(csv_file)
         for row in reader:
-            print(f"{row['Player Name']} is a {row['Level']} player with a loss ratio of ({row['Percentage Loss Ratio']})")
+            print(f"{row['player_name']} is a {row['level']} player with a loss ratio of ({row['percentage_loss_ratio']}).")
+
+    df = pd.read_csv("player_scores.csv")
+    df.loc[df["player_name"] == "Katie the Koala","wins"] += 1
+    print(df)
 
 
     while True:
