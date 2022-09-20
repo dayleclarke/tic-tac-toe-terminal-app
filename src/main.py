@@ -4,6 +4,7 @@ import time
 import pyfiglet
 from simple_term_menu import TerminalMenu
 import clearing
+import csv
 
 
 class TicTacToe:
@@ -195,13 +196,19 @@ def play(game, x_player, o_player):
     #         self.current_winner = player
          
 def select_opponent():
-    print("Lots of players are around around today who would love to play Tic-Tac-Toe with you.\n")
+    print("Lots of players are around around today who would love to play Tic-Tac-Toe with you. They each have different skills levels and experience.\n")
     time.sleep(0.8)
 
+    with open("player_scores.csv", "r") as csv_file:
+        reader = csv.DictReader(csv_file)
+        for row in reader:
+            print(f"{row['Player Name']} is a {row['Level']} player with a loss ratio of ({row['Percentage Loss Ratio']})")
+
+
     while True:
-        selection = input("Select from the following opponents:\n a) Peter the Panda\n b) Katie the Koala\n c) Ollie the Octopus\n d) Danni the Dolphin\n\nEnter a single letter from (a-d) ")
+        selection = input("\nSelect from the following opponents:\n a) Peter the Panda\n b) Katie the Koala\n c) Ollie the Octopus\n d) Danni the D olphin\n\nEnter a single letter from (a-d) ")
         selection = selection.lower().strip()
-        if selection not in ("a", "b", "c", "d"):
+        if selection not in ("a", "b", "c", "d"): 
             time.sleep(0.8)
             print("\nSorry that is not a valid option. You must enter a single letter from (a-d).")
             continue
