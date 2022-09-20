@@ -2,6 +2,8 @@ from players import UserPlayer, EasyComputerPlayer, ExpertComputerPlayer
 from random import choice
 import time
 import pyfiglet
+from simple_term_menu import TerminalMenu
+import clearing
 
 
 class TicTacToe:
@@ -81,7 +83,6 @@ class TicTacToe:
         self.current_winner = None
 
 def select_starting_player(user_player, computer_player):
-    print("To begin we will play a quick game of scissors, paper, rock to determine which player will start. ") 
     hand_gestures = {
       "rock": """
     _______
@@ -108,11 +109,15 @@ def select_starting_player(user_player, computer_player):
 ---.__(___)
 """
   }
+    print("To begin we will play a quick game of scissors, paper, rock to determine which player will start.\nMenu entries can be selected with the arrow or j/k keys ") 
     while True:
-        user_choice = input("Would you like to play rock, paper or scissors? ").lower().strip()
-        time.sleep(0.8)
+        user_options = list(hand_gestures.keys())
+        terminal_menu = TerminalMenu(user_options, title="Hand Gesture Options:")
+        menu_entry_index = terminal_menu.show()  
+        user_choice = user_options[menu_entry_index] 
         print(hand_gestures[user_choice])
         print(f"{user_player} has chosen to play {user_choice}.")
+        time.sleep(0.8)
         opponent_choice = choice(list(hand_gestures.keys()))
         time.sleep(0.8)
         print(hand_gestures[opponent_choice])
@@ -220,7 +225,7 @@ def select_opponent():
 ⠀⠀⠀⠀⣿⣿⣿⣿⣶⠶⠤⠤⢤⣶⣾⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠹⣿⣿⣿⠏⠀⠀⠀⠈⢿⣿⣿⡿⠁⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠈⠉⠉⠀⠀⠀⠀⠀⠀⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀""")
-        print(pyfiglet.figlet_format("Pete"))        
+        print(pyfiglet.figlet_format("Pete the Panda", font = "digital"))        
         return pete_panda
     elif selection == "b":
         print("""
@@ -239,7 +244,7 @@ def select_opponent():
 ⠀⠘⣄⠀⠸⡆⠀⠀⣿⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀⢀⠟⠁⠀
 ⠀⠀⠘⠦⣀⣷⣀⡼⠽⢦⡀⠀⠀⢀⣀⣀⣀⠤⠄⠒⠁⠀⠀⠀
 """)
-        print(pyfiglet.figlet_format("Katie")) 
+        print(pyfiglet.figlet_format("Katie the Koala", font = "digital")) 
         return katie_koala
     elif selection == "c":
         print("""
@@ -262,7 +267,7 @@ def select_opponent():
             (/`    ( (`          ) )  '-;
              `      '-;         (-'
         """)
-        print(pyfiglet.figlet_format("Ollie")) 
+        print(pyfiglet.figlet_format("Ollie the Octopus", font = "digital")) 
         return ollie_octopus
     else:
         print("""
@@ -277,13 +282,15 @@ def select_opponent():
 ⢀⣾⣿⣿⣿⣷⣦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⣾⣿⣿⣿⠿⣿⣿⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⡿⠛⠉⠀⠀⠀⠈⠙⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀""")
-        print(pyfiglet.figlet_format("Danni")) 
+        print(pyfiglet.figlet_format("Danni the Doplphin", font = "digital")) 
         return danni_dolphin
   
 
 if __name__ == '__main__':
-    print("Welcome to TicTacToe!\n")
-    print(pyfiglet.figlet_format("Tic Tac Toe", justify = "center"))
+    clearing.clear()
+    print("Welcome to ...\n")
+    print(pyfiglet.figlet_format("Tic Tac Toe"))
+    print("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+")
     player_name = (input("What is your name?: "))
     print("Hello " + player_name.title() + "! So lovely to meet you. That's a great name.\n")
     time.sleep(0.8)
