@@ -1,42 +1,54 @@
-from players import UserPlayer, EasyComputerPlayer, ExpertComputerPlayer 
+   """_summary_
+
+    Returns:
+        _type_: _description_
+    """
+
 from random import choice
 import time
+import csv
 import pyfiglet
 from simple_term_menu import TerminalMenu
 import clearing
-import csv
-import pandas as pd 
-
+import pandas as pd
+from players import UserPlayer, EasyComputerPlayer, ExpertComputerPlayer
 
 class TicTacToe:
     def __init__(self):
-        self.board = [' ' for i in range(9)]  #we will use a singe list to rep 3x3 board
-        self.current_winner = None # Keep track of the winner
-    
+        self.board = [
+            " " for i in range(9)
+        ]  # we will use a singe list to rep 3x3 board
+        self.current_winner = None  # Keep track of the winner
+
     @staticmethod
     def board_number_indices():
-        #0 | 1 | 2 | (this tells us what number corresponds to what box)
+        # 0 | 1 | 2 | (this tells us what number corresponds to what box)
         number_board = [[str(i) for i in range(j * 3, (j + 1) * 3)] for j in range(3)]
         print("-------------")
         for row in number_board:
-            print('| ' + ' | '.join(row) + ' |')
+            print("| " + " | ".join(row) + " |")
         print("-------------\n")
-    
+
     def print_board(self):
         # The calaculates the rows
         print("-------------")
-        for row in [self.board[i * 3: (i + 1) * 3] for i in range(3)]: # If time try and change this to match the num pad on the key board.
-            print('| ' + ' | '.join(row) + ' |')
+        for row in [
+            self.board[i * 3 : (i + 1) * 3] for i in range(3)
+        ]:  # If time try and change this to match the num pad on the key board.
+            print("| " + " | ".join(row) + " |")
         print("-------------")
-            
+
     def free_positions(self):
-        return [i for i, position in enumerate(self.board) if position == ' '] #List comprehension outlining all the free spots available on the board.   
-    
-    def empty_squares(self): # This will return true if there are empty squares on the board. False means all the positions are taken. 
+        return [
+            i for i, position in enumerate(self.board) if position == " "
+        ]  # List comprehension outlining all the free spots available on the board.
+
+    def empty_squares(self,):  
+    # This will return true if there are empty squares on the board. False means all the positions are taken.
         return " " in self.board
-    
+
     def num_empty_squares(self):
-        return self.board.count(' ') 
+        return self.board.count(" ")
 
     def make_move(self, position, letter):
         if self.board[position] == " ":
@@ -45,48 +57,57 @@ class TicTacToe:
                 self.current_winner = letter
 
     def test_move(self, possible_move, player_letter):
-        if self.board[possible_move] == ' ':
+        if self.board[possible_move] == " ":
             self.board[possible_move] = player_letter
         if self.winner(possible_move, player_letter):
             return True
-        else: 
+        else:
             return False
-           
+
     def winner(self, position, letter):
         # winner if 3 in a row anywhere. Must check row, column and both diagonals
-        #row check       
-        row_index = position // 3 # how many times is the position index divisable by 3?  This will indicate its row (either 0, 1 or 2). 
-        row = self.board[row_index * 3 : (row_index + 1) * 3] # This selects the entire row that the position is in. 
+        # row check
+        row_index = (
+            position // 3
+        )  # how many times is the position index divisable by 3?  This will indicate its row (either 0, 1 or 2).
+        row = self.board[
+            row_index * 3 : (row_index + 1) * 3
+        ]  # This selects the entire row that the position is in.
         if all([square == letter for square in row]):
             return True
-        
-        #column check
-        col_index = position % 3 # When you divide the position by 3 what is left over? (Position modu 3 will indicate its column index (either 0, 1 or 2))
+
+        # column check
+        col_index = (
+            position % 3
+        )  # When you divide the position by 3 what is left over? (Position modu 3 will indicate its column index (either 0, 1 or 2))
         column = [self.board[col_index + i * 3] for i in range(3)]
         if all([square == letter for square in column]):
             return True
-        
-        #diagonal check
-        #diagonals left to right are on (0, 4, 8)
-        #diagonals right to left are on (2, 4, 6)
-        if position % 2 == 0: # Only even numbers run along the diagonal
+
+        # diagonal check
+        # diagonals left to right are on (0, 4, 8)
+        # diagonals right to left are on (2, 4, 6)
+        if position % 2 == 0:  # Only even numbers run along the diagonal
             diagonal1 = [self.board[i] for i in [0, 4, 8]]
             if all([square == letter for square in diagonal1]):
-                return True           
-            diagonal2= [self.board[i] for i in [2, 4, 6]]
+                return True
+            diagonal2 = [self.board[i] for i in [2, 4, 6]]
             if all([square == letter for square in diagonal2]):
                 return True
-        
+
         # If all checks fail there is no winner return False
         return False
 
     def reset_board(self):
-        self.board = [' ' for i in range(9)]  #we will use a singe list to rep 3x3 board
+        self.board = [
+            " " for i in range(9)
+        ]  # we will use a singe list to rep 3x3 board
         self.current_winner = None
+
 
 def select_starting_player(user_player, computer_player):
     hand_gestures = {
-      "rock": """
+        "rock": """
     _______
 ---'   ____)
       (_____)
@@ -94,7 +115,7 @@ def select_starting_player(user_player, computer_player):
       (____)
 ---.__(___)
 """,
-"paper": """
+        "paper": """
     _______
 ---'   ____)____
           ______)
@@ -102,21 +123,22 @@ def select_starting_player(user_player, computer_player):
          _______)
 ---.__________)
 """,
-"scissors": """
+        "scissors": """
     _______
 ---'   ____)____
           ______)
        __________)
       (____)
 ---.__(___)
-"""
-  }
-    print("To begin we will play a quick game of scissors, paper, rock to determine which player will start.\nMenu entries can be selected with the arrow or j/k keys ") 
+""",
+    }
+    print("We will begin by play a game of scissors, paper, rock to determine which player will start.")
+    print("Menu entries can be selected with the arrow or j/k keys.")
     while True:
         user_options = list(hand_gestures.keys())
         terminal_menu = TerminalMenu(user_options, title="Hand Gesture Options:")
-        menu_entry_index = terminal_menu.show()  
-        user_choice = user_options[menu_entry_index] 
+        menu_entry_index = terminal_menu.show()
+        user_choice = user_options[menu_entry_index]
         print(hand_gestures[user_choice])
         print(f"{user_player} has chosen to play {user_choice}.")
         time.sleep(0.8)
@@ -125,45 +147,58 @@ def select_starting_player(user_player, computer_player):
         print(hand_gestures[opponent_choice])
         print(f"{computer_player} has chosen to play {opponent_choice}.")
         time.sleep(0.8)
-        if user_choice == opponent_choice: 
-            print(f"Great minds think alike! You both selected {user_choice}. Please select again.")
+        if user_choice == opponent_choice:
+            print(
+                f"Great minds think alike! You both selected {user_choice}. Please select again."
+            )
             continue
-        else:
-            break
+        break
 
     if user_choice == "paper":
         if opponent_choice == "scissors":
-            print(f"{computer_player}'s scissors cuts {user_player}'s paper. {computer_player} wins and will go first!")
+            print(
+                f"{computer_player}'s scissors cuts {user_player}'s paper. {computer_player} wins and will go first!"
+            )
             return computer_player
         elif opponent_choice == "rock":
-            print(f"{user_player}'s paper covers {computer_player}'s scissors. {user_player} wins and will go first!")
+            print(
+                f"{user_player}'s paper covers {computer_player}'s scissors. {user_player} wins and will go first!"
+            )
             return user_player
-    
+
     if user_choice == "scissors":
         if opponent_choice == "paper":
-            print(f"{user_player}'s scissors cuts {computer_player}'s paper. {user_player} wins and will go first!")
+            print(
+                f"{user_player}'s scissors cuts {computer_player}'s paper. {user_player} wins and will go first!"
+            )
             return user_player
         elif opponent_choice == "rock":
-            print(f"{computer_player}'s rock crushes {user_player}'s scissors. {computer_player} wins and will go first!")
+            print(
+                f"{computer_player}'s rock crushes {user_player}'s scissors. {computer_player} wins and will go first!"
+            )
             return computer_player
-
 
     if user_choice == "rock":
         if opponent_choice == "paper":
-            print(f"{computer_player}'s paper covers {user_player}'s rock. {computer_player} wins and will go first!")
+            print(
+                f"{computer_player}'s paper covers {user_player}'s rock. {computer_player} wins and will go first!"
+            )
             return computer_player
         elif opponent_choice == "scissors":
-             print(f"{user_player}'s rock crushes {computer_player}'s scissors. {user_player} wins and will go first!")
-             return user_player
+            print(
+                f"{user_player}'s rock crushes {computer_player}'s scissors. {user_player} wins and will go first!"
+            )
+            return user_player
+
 
 def play(game, x_player, o_player):
     turn = select_starting_player(user_player_1.name, opponent.name)
     print("Turn variable:", turn)
     print("X_player- value", x_player.name)
     print("Our game will be played on a 3 by 3 board using the following positions.\n")
-    standard_board.board_number_indices()  
-    print('Commencing game....')
-    # Add in option here to play scissor, paper rock to decide who goes first. 
+    standard_board.board_number_indices()
+    print("Commencing game....")
+    # Add in option here to play scissor, paper rock to decide who goes first.
     while game.free_positions():
         if turn == x_player.name:
             position = x_player.get_move(game)
@@ -171,71 +206,83 @@ def play(game, x_player, o_player):
             print(f"{x_player.name} makes a move to position {position}")
             game.print_board()
             if game.current_winner:
-                print("Congratulations!! You won the game!") 
+                print("Congratulations!! You won the game!")
                 df = pd.read_csv("player_scores.csv")
-                df.loc[df["player_name"] == o_player.name,["losses", "total_games"]] += 1
+                df.loc[
+                    df["player_name"] == o_player.name, ["losses", "total_games"]
+                ] += 1
                 df["percentage_loss_ratio"] = df["losses"] / df["total_games"]
-                pd.options.display.float_format = '{:.2%}'.format
+                pd.options.display.float_format = "{:.2%}".format
                 print(df)
-                df.to_csv("player_scores.csv", index= False)   
+                df.to_csv("player_scores.csv", index=False)
                 break
             turn = o_player.name
             continue
         elif turn == o_player.name:
             time.sleep(1)
             position = o_player.get_move(game)
-            game.make_move(position, "O") 
+            game.make_move(position, "O")
             print(f"{o_player.name} makes a move to position {position}")
             game.print_board()
             if game.current_winner:
                 print(f"Better luck next time! {o_player.name} won the game this time.")
                 df = pd.read_csv("player_scores.csv")
                 print(df)
-                df.loc[df["player_name"] == o_player.name,["wins", "total_games"]] += 1
+                df.loc[df["player_name"] == o_player.name, ["wins", "total_games"]] += 1
                 df["percentage_loss_ratio"] = df["losses"] / df["total_games"]
-                pd.options.display.float_format = '{:.2%}'.format
+                pd.options.display.float_format = "{:.2%}".format
                 print(df)
-                df.to_csv("player_scores.csv", index= False)   
+                df.to_csv("player_scores.csv", index=False)
                 break
             turn = x_player.name
-            continue 
+            continue
     else:
         print("It's a tie!")
         df = pd.read_csv("player_scores.csv")
-        df.loc[df["player_name"] == o_player.name,["ties", "total_games"]] += 1
+        df.loc[df["player_name"] == o_player.name, ["ties", "total_games"]] += 1
         df["percentage_loss_ratio"] = df["losses"] / df["total_games"]
-        pd.options.display.float_format = '{:.2%}'.format
+        pd.options.display.float_format = "{:.2%}".format
         print(df)
-        df.to_csv("player_scores.csv", index= False) 
+        df.to_csv("player_scores.csv", index=False)
 
     # def make_move(self, player, letter):
     #     position = player.get_move(self)
     #     self.board[position] = letter
     #     print(f"{player.name} makes a move to position {position}")
-    #     
+    #
     #     if self.winner(position, letter):
     #         self.current_winner = player
-         
+
+
 def select_opponent():
-    print("Lots of players are around around today who would love to play Tic-Tac-Toe with you. They each have different skills levels and experience.\n")
+    print(
+        "Lots of players are around around today who would love to play Tic-Tac-Toe with you. They each have different skills levels and experience.\n"
+    )
     time.sleep(0.8)
 
     with open("player_scores.csv", "r") as csv_file:
         reader = csv.DictReader(csv_file)
         for row in reader:
-            print(f"{row['player_name']} is a {row['level']} player with a loss ratio of ({row['percentage_loss_ratio']}).")
+            print(
+                f"{row['player_name']} is a {row['level']} player with a loss ratio of ({row['percentage_loss_ratio']})."
+            )
 
     while True:
-        selection = input("\nSelect from the following opponents:\n a) Pete the Panda\n b) Katie the Koala\n c) Ollie the Octopus\n d) Danni the D olphin\n\nEnter a single letter from (a-d) ")
+        selection = input(
+            "\nSelect from the following opponents:\n a) Pete the Panda\n b) Katie the Koala\n c) Ollie the Octopus\n d) Danni the D olphin\n\nEnter a single letter from (a-d) "
+        )
         selection = selection.lower().strip()
-        if selection not in ("a", "b", "c", "d"): 
+        if selection not in ("a", "b", "c", "d"):
             time.sleep(0.8)
-            print("\nSorry that is not a valid option. You must enter a single letter from (a-d).")
+            print(
+                "\nSorry that is not a valid option. You must enter a single letter from (a-d)."
+            )
             continue
         else:
             break
     if selection == "a":
-        print("""⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+        print(
+            """⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⣰⣿⣿⣿⣿⣦⣀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⢿⣿⠟⠋⠉⠀⠀⠀⠀⠉⠑⠢⣄⡀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⢠⠞⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢿⣿⣿⣦⡀
@@ -251,11 +298,13 @@ def select_opponent():
 ⠀⠀⠀⢸⣿⣦⣀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣼⡟⠻⠿⠟⠀⠀⠀⠀
 ⠀⠀⠀⠀⣿⣿⣿⣿⣶⠶⠤⠤⢤⣶⣾⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠹⣿⣿⣿⠏⠀⠀⠀⠈⢿⣿⣿⡿⠁⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠈⠉⠉⠀⠀⠀⠀⠀⠀⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀""")
-        print(pyfiglet.figlet_format("Pete the Panda", font = "digital"))        
+⠀⠀⠀⠀⠀⠈⠉⠉⠀⠀⠀⠀⠀⠀⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀"""
+        )
+        print(pyfiglet.figlet_format("Pete the Panda", font="digital"))
         return pete_panda
     elif selection == "b":
-        print("""
+        print(
+            """
 ⢀⠔⠊⠉⠑⢄⠀⠀⣀⣀⠤⠤⠤⢀⣀⠀⠀⣀⠔⠋⠉⠒⡄⠀
 ⡎⠀⠀⠀⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠉⠀⠀⠀⠀⠀⠘⡄
 ⣧⢢⠀⠀⠀⠀⠀⠀⠀⠀⣀⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⢈⣆⡗
@@ -270,11 +319,13 @@ def select_opponent():
 ⠀⢰⠁⠀⢸⠀⠀⠀⣿⠁⠀⠙⡟⠒⠒⠉⠀⠀⠀⠀⠀⡇⡎⠀
 ⠀⠘⣄⠀⠸⡆⠀⠀⣿⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀⢀⠟⠁⠀
 ⠀⠀⠘⠦⣀⣷⣀⡼⠽⢦⡀⠀⠀⢀⣀⣀⣀⠤⠄⠒⠁⠀⠀⠀
-""")
-        print(pyfiglet.figlet_format("Katie the Koala", font = "digital")) 
+"""
+        )
+        print(pyfiglet.figlet_format("Katie the Koala", font="digital"))
         return katie_koala
     elif selection == "c":
-        print("""
+        print(
+            """
                         ___
                      .-'   `'.
                     /         \ 
@@ -293,11 +344,13 @@ def select_opponent():
      `--~`   ) )    .-'.'      '.'.  | (
             (/`    ( (`          ) )  '-;
              `      '-;         (-'
-        """)
-        print(pyfiglet.figlet_format("Ollie the Octopus", font = "digital")) 
+        """
+        )
+        print(pyfiglet.figlet_format("Ollie the Octopus", font="digital"))
         return ollie_octopus
     else:
-        print("""
+        print(
+            """
 ⠀⠀⠀⠐⢿⣿⣿⣿⣿⣿⣶⣤⣤⣤⣤⣤⣀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠙⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⡀⠀⠀⠀⠀
 ⠀⠀⠀⠀⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⠀⠀⠀
@@ -308,40 +361,41 @@ def select_opponent():
 ⠀⠀⢸⣿⣿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⢀⣾⣿⣿⣿⣷⣦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⣾⣿⣿⣿⠿⣿⣿⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⡿⠛⠉⠀⠀⠀⠈⠙⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀""")
-        print(pyfiglet.figlet_format("Danni the Doplphin", font = "digital")) 
+⡿⠛⠉⠀⠀⠀⠈⠙⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"""
+        )
+        print(pyfiglet.figlet_format("Danni the Doplphin", font="digital"))
         return danni_dolphin
-  
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     clearing.clear()
     print("Welcome to ...\n")
     print(pyfiglet.figlet_format("Tic Tac Toe"))
     print("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+")
-    player_name = (input("What is your name?: "))
-    print("Hello " + player_name.title() + "! So lovely to meet you. That's a great name.\n")
+    player_name = input("What is your name?: ")
+    print(
+        "Hello "
+        + player_name.title()
+        + "! So lovely to meet you. That's a great name.\n"
+    )
     time.sleep(0.8)
-    user_player_1 = UserPlayer('X', player_name)
-    pete_panda = EasyComputerPlayer('O', "Pete the Panda")
-    katie_koala = EasyComputerPlayer('O', "Katie the Koala")
-    ollie_octopus = ExpertComputerPlayer('O', "Ollie the Octopus")
-    danni_dolphin = ExpertComputerPlayer('O', "Danni the Dolphin")
+    user_player_1 = UserPlayer("X", player_name)
+    pete_panda = EasyComputerPlayer("O", "Pete the Panda")
+    katie_koala = EasyComputerPlayer("O", "Katie the Koala")
+    ollie_octopus = ExpertComputerPlayer("O", "Ollie the Octopus")
+    danni_dolphin = ExpertComputerPlayer("O", "Danni the Dolphin")
     standard_board = TicTacToe()
     while True:
-        standard_board.reset_board() 
+        standard_board.reset_board()
         opponent = select_opponent()
-        print(f"You have selected {opponent.name} as your opponent today.  Good choice.") 
+        print(
+            f"You have selected {opponent.name} as your opponent today.  Good choice."
+        )
         play(standard_board, user_player_1, opponent)
-        play_again = input("Thanks for playing today. Would you like to play again? (yes/no): ")
-        if play_again.lower().strip().startswith('y'):
+        play_again = input(
+            "Thanks for playing today. Would you like to play again? (yes/no): "
+        )
+        if play_again.lower().strip().startswith("y"):
             continue
         else:
             break
-
-
-    
-
-
-
-
-
