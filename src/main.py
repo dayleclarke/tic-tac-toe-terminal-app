@@ -171,7 +171,13 @@ def play(game, x_player, o_player):
             print(f"{x_player.name} makes a move to position {position}")
             game.print_board()
             if game.current_winner:
-                print("Congratulations!! You won the game!")   
+                print("Congratulations!! You won the game!") 
+                df = pd.read_csv("player_scores.csv")
+                df.loc[df["player_name"] == o_player.name,["losses", "total_games"]] += 1
+                df["percentage_loss_ratio"] = df["losses"] / df["total_games"]
+                pd.options.display.float_format = '{:.2%}'.format
+                print(df)
+                df.to_csv("player_scores.csv", index= False)   
                 break
             turn = o_player.name
             continue
@@ -183,11 +189,25 @@ def play(game, x_player, o_player):
             game.print_board()
             if game.current_winner:
                 print(f"Better luck next time! {o_player.name} won the game this time.")
+                df = pd.read_csv("player_scores.csv")
+                print(df)
+                df.loc[df["player_name"] == o_player.name,["wins", "total_games"]] += 1
+                df["percentage_loss_ratio"] = df["losses"] / df["total_games"]
+                pd.options.display.float_format = '{:.2%}'.format
+                print(df)
+                df.to_csv("player_scores.csv", index= False)   
                 break
             turn = x_player.name
             continue 
     else:
-        print("It's a tie!") 
+        print("It's a tie!")
+        df = pd.read_csv("player_scores.csv")
+        df.loc[df["player_name"] == o_player.name,["ties", "total_games"]] += 1
+        df["percentage_loss_ratio"] = df["losses"] / df["total_games"]
+        pd.options.display.float_format = '{:.2%}'.format
+        print(df)
+        df.to_csv("player_scores.csv", index= False) 
+
     # def make_move(self, player, letter):
     #     position = player.get_move(self)
     #     self.board[position] = letter
@@ -205,13 +225,8 @@ def select_opponent():
         for row in reader:
             print(f"{row['player_name']} is a {row['level']} player with a loss ratio of ({row['percentage_loss_ratio']}).")
 
-    df = pd.read_csv("player_scores.csv")
-    df.loc[df["player_name"] == "Katie the Koala","wins"] += 1
-    print(df)
-
-
     while True:
-        selection = input("\nSelect from the following opponents:\n a) Peter the Panda\n b) Katie the Koala\n c) Ollie the Octopus\n d) Danni the D olphin\n\nEnter a single letter from (a-d) ")
+        selection = input("\nSelect from the following opponents:\n a) Pete the Panda\n b) Katie the Koala\n c) Ollie the Octopus\n d) Danni the D olphin\n\nEnter a single letter from (a-d) ")
         selection = selection.lower().strip()
         if selection not in ("a", "b", "c", "d"): 
             time.sleep(0.8)

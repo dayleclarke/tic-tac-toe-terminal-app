@@ -1,5 +1,5 @@
 player_name,level,wins,ties,losses,total_games,percentage_loss_ratio
-Peter the Panda,beginner, 5,10,30,45,67%
-Katie the Koala,beginner, 7,10,40,57,70%
-Ollie the Octopus,genius, 10,65,0,75,0%
-Danni the Dolphin,genius,48,0,53,0%,0%
+Pete the Panda,beginner,5,11,31,47,0.6595744680851063
+Katie the Koala,beginner,7,10,40,57,0.7017543859649122
+Ollie the Octopus,genius,16,66,0,77,0.0
+Danni the Dolphin,genius,48,61,0,109,0.0
