@@ -15,6 +15,7 @@ Classes:
     ExpertComputerPlayer(Player)- represents an unbeatable computer player.
 """
 from random import choice
+import pandas as pd
 
 class RangeError(Exception):
     """An error raised when an integer is outside of the valid range."""
@@ -42,6 +43,28 @@ class Player:
         self.letter = letter
         self.name = name
 
+    def update_scores(self, outcome):
+        """Updates the player's win/tie/loss records.
+
+        Increases either the player's total wins, ties or losses by 1
+        in the player_scores.csv file, depending on the outcome of the
+        game. Also increases the total games played by one and updates
+        the percentage_loss_ratio.
+
+        Args:
+            outcome(str): the column title that needs to be updated
+                to reflect the outcome of the game: either "wins",
+                "ties", or "losses".
+
+        Returns:
+            dataframe: a dataframe showing the updated player_score.csv file.
+        """
+        df = pd.read_csv("player_scores.csv")
+        df.loc[df["player_name"] == self.name, [outcome, "total_games"]] += 1
+        df["percentage_loss_ratio"] = df["losses"] / df["total_games"]
+        pd.options.display.float_format = "{:.2%}".format
+        df.to_csv("player_scores.csv", index=False)
+        return df
 
 class UserPlayer(Player):
     """A class used to represent the user/human player."""

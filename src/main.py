@@ -392,14 +392,7 @@ def play(game, x_player, o_player):
         *
         *
                 """)
-                df = pd.read_csv("player_scores.csv")
-                df.loc[
-                    df["player_name"] == o_player.name, ["losses", "total_games"]
-                ] += 1
-                df["percentage_loss_ratio"] = df["losses"] / df["total_games"]
-                pd.options.display.float_format = "{:.2%}".format
-                print(df)
-                df.to_csv("player_scores.csv", index=False)
+                print(o_player.record_loss("losses"))
                 break
             turn = o_player.name
             continue
@@ -456,7 +449,7 @@ if __name__ == "__main__":
         terminal_menu = TerminalMenu(user_options)
         menu_entry_index = terminal_menu.show()
         name_confirmation = user_options[menu_entry_index]
-        if name_confirmation == "No I wish to enter my name again":
+        if name_confirmation == "No I wish to enter my name again.":
             continue
         break
     print("Thank you for confirming that for me. I would hate to call you by the wrong name.")
