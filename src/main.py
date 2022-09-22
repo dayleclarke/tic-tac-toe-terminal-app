@@ -1,10 +1,4 @@
-   """_summary_
-
-    Returns:
-        _type_: _description_
-    """
-
-from random import choice
+from random import choice  #Ensure you place any built-in modules first.
 import time
 import csv
 import pyfiglet
@@ -12,7 +6,6 @@ from simple_term_menu import TerminalMenu
 import clearing
 import pandas as pd
 from players import UserPlayer, EasyComputerPlayer, ExpertComputerPlayer
-
 class TicTacToe:
     def __init__(self):
         self.board = [
