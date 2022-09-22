@@ -335,8 +335,8 @@ def select_starting_player(user_player, computer_player):
         return user_player
 
     if user_choice == "scissors":
-        print(pyfiglet.figlet_format("You Win!"))
         if opponent_choice == "paper":
+            print(pyfiglet.figlet_format("You Win!"))
             print(
                 f"{user_player}'s scissors cuts {computer_player}'s paper. "
                 f"{user_player} wins and will go first!"
