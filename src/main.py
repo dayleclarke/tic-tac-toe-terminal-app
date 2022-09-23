@@ -49,13 +49,13 @@ class TicTacToe:
             if self.winner(position, letter):
                 self.current_winner = letter
 
-    def test_move(self, possible_move, player_letter):
-        if self.board[possible_move] == " ":
-            self.board[possible_move] = player_letter
-        if self.winner(possible_move, player_letter):
-            return True
-        else:
-            return False
+    # def test_move(self, possible_move, player_letter):
+    #     if self.board[possible_move] == " ":
+    #         self.board[possible_move] = player_letter
+    #     if self.winner(possible_move, player_letter):
+    #         return True
+    #     else:
+    #         return False
 
     def winner(self, position, letter):
         # winner if 3 in a row anywhere. Must check row, column and both diagonals
@@ -376,14 +376,6 @@ def play(game, x_player, o_player):
                 try:
                     position = x_player.get_move(game)
                     break
-                    # val = int(
-                    #     input("Based on the board shown above,"
-                    #           " enter an integer (0-8) to indicate where you would like to go: "))
-                    # if val not in range(0, 9):
-                    #     raise RangeError(val)
-                    # if val not in game.free_positions():
-                    #     raise OccupiedError(val)
-                    # return val
                 except RangeError as err:
                     print(err)
                 except OccupiedError as err:
@@ -392,8 +384,18 @@ def play(game, x_player, o_player):
                     print("That isn't a valid integer. Please enter a number with no decimal places.")
 
             
+
+                                # val = int(
+                    #     input("Based on the board shown above,"
+                    #           " enter an integer (0-8) to indicate where you would like to go: "))
+                    # if val not in range(0, 9):
+                    #     raise RangeError(val)
+                    # if val not in game.free_positions():
+                    #     raise OccupiedError(val)
+                    # return val
             game.make_move(position, "X")
             print(f"{x_player.name} makes a move to position {position}")
+            print(game.board)
             game.print_board()
             if game.current_winner:
                 print("Congratulations!!!")
@@ -477,3 +479,7 @@ if __name__ == "__main__":
         if play_again.lower().strip().startswith("y"):
             continue
         break
+
+
+
+

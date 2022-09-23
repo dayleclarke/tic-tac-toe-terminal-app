@@ -65,7 +65,7 @@ class Player:
         pd.options.display.float_format = "{:.2%}".format
         df.to_csv("player_scores.csv", index=False)
         return df
-
+# Make file a parameter, make a test version of file so it doesn't 
 class UserPlayer(Player):
     """A class used to represent the user/human player."""
     # def __init__(self, letter, name):
@@ -161,6 +161,7 @@ class ExpertComputerPlayer(Player):
             dict: showing the position (with an int value between 0-8)
                 and score (an int value)
         """
+
         maximising_letter = self.letter
         minimising_letter = "X"
         # Terminal states
@@ -194,7 +195,7 @@ class ExpertComputerPlayer(Player):
             state.make_move(possible_move, minimising_letter)
             sim_score = self.minimax(state, True)
             state.board[possible_move] = " "
-            state.current_winner = None  
+            state.current_winner = None 
             sim_score["position"] = possible_move
             if sim_score["score"] < best_move["score"]:
                 best_move = sim_score
