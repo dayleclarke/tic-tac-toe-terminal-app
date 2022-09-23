@@ -47,6 +47,7 @@ class TestGetMove:
         with pytest.raises(OccupiedError):
             user_player_1.get_move(standard_board)
 
+
 class TestWinner:
 
     def test_winner_diagonal(self):         
@@ -78,4 +79,43 @@ class TestWinner:
         standard_board.board = ["X", "O", " ", "X", "X", " ", "O", "O", "X"]
         assert standard_board.winner(1, "O") is False
 
-class TestWinner:
+class TestEmptySquares:
+    def test_empty_squares(self):
+        standard_board.board = ["X", " ", " ", "X", "O", " ", "X", " ", "O"]
+        assert standard_board.empty_squares() is True
+        standard_board.board = ["X", "X", "O ", "X", "O", "O", "X", "O", "O"]
+        assert standard_board.empty_squares() is False
+
+class TestFreePositions:  
+    def test_free_positions(self):
+        standard_board.board = ["X", " ", " ", "X", "O", " ", "X", " ", "O"]
+        assert standard_board.free_positions() == [1, 2, 5, 7]
+        standard_board.board = [" ", " ", "O ", "X", "O", "O", "X", "O", " "]
+        assert standard_board.free_positions() == [0, 1, 8]
+        standard_board.board = ["X", "X", "O ", "X", "O", "O", "X", "O", "O"]
+        assert standard_board.free_positions() == []
+
+
+class TestNumEmptySquares:  
+    def test_num_empty_squares(self):
+        standard_board.board = ["X", " ", " ", "X", "O", " ", "X", " ", "O"]
+        assert standard_board.num_empty_squares() is 4
+        standard_board.board = ["X", " ", "O ", "X", "O", "O", "X", "O", " "]
+        assert standard_board.num_empty_squares() is 2
+        standard_board.board = [" ", " ", " ", " ", " ", " ", " ", " ", " "]
+        assert standard_board.num_empty_squares() is 9
+        standard_board.board = ["X", "O", "O", "X", "O", "X", "X", "O", "X"]
+        assert standard_board.num_empty_squares() is 0
+# class FreePositions:
+#     def test_free_positions(self):
+#         standard_board.board = ["O", "X", "O", "X", "O", " ", "X", " ", "O"]
+#         assert standard_board.free_positions() == [0, 2, 5, 8]
+#         # standard_board.board = ["X", "X", "O ", "X", "O", "O", "X", "O", "O"]
+#         # assert standard_board.free_positions() == 
+
+# class NumEmptySquares:
+#     def num_empty_squares(self):
+#         standard_board.board = ["O", "X", "O", "X", "O", " ", "X", " ", "O"]
+#         assert standard_board.num_empty_squares() == "dfshjkdsfjdsfjk"
+#         # standard_board.board = ["X", "X", "O ", "X", "O", "O", "X", "O", "O"]
+#         # assert standard_board.free_positions() ==

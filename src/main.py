@@ -36,7 +36,7 @@ class TicTacToe:
             i for i, position in enumerate(self.board) if position == " "
         ]  # List comprehension outlining all the free spots available on the board.
 
-    def empty_squares(self,):  
+    def empty_squares(self): 
     # This will return true if there are empty squares on the board. False means all the positions are taken.
         return " " in self.board
 
@@ -395,7 +395,7 @@ def play(game, x_player, o_player):
                     # return val
             game.make_move(position, "X")
             print(f"{x_player.name} makes a move to position {position}")
-            print(game.board)
+            print(game.free_positions())
             game.print_board()
             if game.current_winner:
                 print("Congratulations!!!")
