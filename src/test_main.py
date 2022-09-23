@@ -106,16 +106,3 @@ class TestNumEmptySquares:
         assert standard_board.num_empty_squares() is 9
         standard_board.board = ["X", "O", "O", "X", "O", "X", "X", "O", "X"]
         assert standard_board.num_empty_squares() is 0
-# class FreePositions:
-#     def test_free_positions(self):
-#         standard_board.board = ["O", "X", "O", "X", "O", " ", "X", " ", "O"]
-#         assert standard_board.free_positions() == [0, 2, 5, 8]
-#         # standard_board.board = ["X", "X", "O ", "X", "O", "O", "X", "O", "O"]
-#         # assert standard_board.free_positions() == 
-
-# class NumEmptySquares:
-#     def num_empty_squares(self):
-#         standard_board.board = ["O", "X", "O", "X", "O", " ", "X", " ", "O"]
-#         assert standard_board.num_empty_squares() == "dfshjkdsfjdsfjk"
-#         # standard_board.board = ["X", "X", "O ", "X", "O", "O", "X", "O", "O"]
-#         # assert standard_board.free_positions() ==
