@@ -44,4 +44,6 @@ for i in range(100):
     testing_ai(standard_board, katie_koala, ollie_octopus)
 
 df = pd.read_csv("manual_ai_check_results.csv")
-print (df)
+print(df)
+
+
