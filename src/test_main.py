@@ -1,91 +1,19 @@
-from main import UserPlayer, EasyComputerPlayer, TicTacToe, select_starting_player
-from players import RangeError, OccupiedError
-import pytest 
+"""A series of tests run on the main.py file.
 
+Classes:
+    TestWinner-used to test winner() method of the TicTacToe class.
+
+Functions:
+    test_empty_squares()- Tests empty_squares method() of the TicTacToe class.
+    test_free_positions()- Tests free_positions method() of the TicTacToe class.
+    test_num_empty_squares()- Tests num_empty_squares method() of the TicTacToe class.
+"""
+import pytest
+from main import UserPlayer, EasyComputerPlayer, TicTacToe
 
 user_player_1 = UserPlayer("X", "Dayle")
 pete_panda = EasyComputerPlayer("O", "Pete the Panda")
 standard_board = TicTacToe()
-
-def fake_input(monkeypatch, user_input):
-    """Patchs input data with a "monkeypatch" (fake inputs).
-
-    This allows dynamic (run-time) modiciations of the program. It
-    allows the test to mock user inputs and test them one at at
-    time.
-
-    Args:
-        monkeypatch: an object imported from within pytest.
-        user_input(list): user input to be added one at a time. This
-        replaces user input with mock data.
-    """
-    test_inputs = iter(user_input)
-    monkeypatch.setattr("builtins.input", lambda prompt: next(test_inputs))
-
-
-class TestGetMove:
-    """A class used to test get_move() method of the UserPlayer class."""
-
-    def test_get_move(self, monkeypatch):
-        """Tests the method works as expected when given valid input.
-
-        Args:
-            monkeypatch: an object imported from within pytest.
-        """
-        fake_input(monkeypatch,[0, 5, 8])
-        assert user_player_1.get_move(standard_board) == 0
-        assert user_player_1.get_move(standard_board) == 5
-        assert user_player_1.get_move(standard_board) == 8
-
-    def test_above_range(self, monkeypatch):
-        """Test the method raises a RangeError when given input < 0.
-
-        Args:
-            monkeypatch: an object imported from within pytest.
-        """
-        fake_input(monkeypatch,[-1, -20, -50])
-        for i in range(3):
-            with pytest.raises(RangeError):
-                user_player_1.get_move(standard_board)
-
-    def test_below_range(self, monkeypatch):
-        """Test the method raises a RangeError when given input > 8.
-
-        Args:
-            monkeypatch: an object imported from within pytest.
-        """
-        fake_input(monkeypatch,[9, 20, 50])
-        for i in range(3):
-            with pytest.raises(RangeError):
-                user_player_1.get_move(standard_board)
-
-    def test_type_conversion(self, monkeypatch):
-        """Test method raises a ValueError when input cannot be
-        converted to an integer.
-
-        Writing out numbers in long hand or floats entered into user
-        input (as it is entered as a string) are not able to be converted
-        into an integer. This should raise a ValueError.
-
-        Args:
-            monkeypatch: an object imported from within pytest.
-        """
-        fake_input(monkeypatch,["three", "five", "-0.5", "1.5"])
-        with pytest.raises(ValueError):
-            user_player_1.get_move(standard_board)
-
-    def test_occupied_error(self, monkeypatch):
-        """Test the method raises an OccupiedError when position is already
-        occupied on the board.
-
-        Args:
-            monkeypatch: an object imported from within pytest.
-        """
-        standard_board.board = ["O", " ", "X", " ", "X", " ", "X", " ", "O"]
-        fake_input(monkeypatch,[0, 2, 4])
-        with pytest.raises(OccupiedError):
-            user_player_1.get_move(standard_board)
-
 
 class TestWinner:
     """A class used to test winner() method of the TicTacToe class."""
@@ -98,6 +26,7 @@ class TestWinner:
         a diagonal (either [0, 4 and 8] or [2, 4, 6]).
         Different simulated board positions are provided for this test.
         """
+        standard_board.board = ["O", " ", "X", " ", "X", " ", "X", " ", "O"]
         assert standard_board.winner(4, "X") is True
         standard_board.board = ["O", " ", "", " ", "O", " ", "X", " ", "O"]
         assert standard_board.winner(2, "X") is False
