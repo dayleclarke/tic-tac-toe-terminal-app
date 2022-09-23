@@ -48,6 +48,7 @@ class TestGetMove:
             user_player_1.get_move(standard_board)
 
 class TestWinner:
+
     def test_winner_diagonal(self):         
         assert standard_board.winner(4, "X") is True
         standard_board.board = ["O", " ", "", " ", "O", " ", "X", " ", "O"]
@@ -76,3 +77,5 @@ class TestWinner:
         assert standard_board.winner(1, "O") is True
         standard_board.board = ["X", "O", " ", "X", "X", " ", "O", "O", "X"]
         assert standard_board.winner(1, "O") is False
+
+class TestWinner:
