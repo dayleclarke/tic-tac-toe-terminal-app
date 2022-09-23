@@ -1,19 +1,19 @@
 """A series of tests run on the players.py file.
 
 Classes:
-    TestGetMove- used to test get_move() method of the UserPlayer class.
+    TestGetMoveUser- used to test get_move() method of the UserPlayer class.
 
 Functions:
     fake_input(): Patchs input data with a "monkeypatch"
 
 """
 import pytest
-from main import UserPlayer, EasyComputerPlayer, TicTacToe
+from main import UserPlayer, ExpertComputerPlayer, TicTacToe
 from players import RangeError, OccupiedError
 
 
 user_player_1 = UserPlayer("X", "Dayle")
-pete_panda = EasyComputerPlayer("O", "Pete the Panda")
+ollie_octopus = ExpertComputerPlayer("O", "Ollie the Octopus")
 standard_board = TicTacToe()
 
 def fake_input(monkeypatch, user_input):
@@ -32,7 +32,7 @@ def fake_input(monkeypatch, user_input):
     monkeypatch.setattr("builtins.input", lambda prompt: next(test_inputs))
 
 
-class TestGetMove:
+class TestGetMoveUser:
     """A class used to test get_move() method of the UserPlayer class."""
 
     def test_get_move(self, monkeypatch):
@@ -87,6 +87,8 @@ class TestGetMove:
         """Test the method raises an OccupiedError when position is already
         occupied on the board.
 
+        A simulated board position is provided for this test
+
         Args:
             monkeypatch: an object imported from within pytest.
         """
@@ -94,3 +96,58 @@ class TestGetMove:
         fake_input(monkeypatch,[0, 2, 4])
         with pytest.raises(OccupiedError):
             user_player_1.get_move(standard_board)
+
+class TestGetMoveExpertComp:
+    """A class used to test get_move() method of the
+    ExpertComputerPlayer.
+
+    """
+    def test_take_obvious_win(self):
+        """Test player takes the winning position when possible.
+
+        This tests that the method returns the position on the board
+        which would allow the player to win when it is possible to do
+        so. Checks a horizontal, vertical and diagonal win. It also
+        tests that the player takes a win before blocking a postential
+        loss.
+        """
+        standard_board.board = ["O", " ", " ", " ", "X", " ", "O", " ", "X"]
+        # With an "O" in position 0 and 6 the player will win if they
+        # place their marker at position 3.
+        assert ollie_octopus.get_move(standard_board) == 3
+        standard_board.board = [" ", "O", "O", " ", "X", " ", " ", " ", "X"]
+        # With an "O" in position 1 and 2 the player will win if they
+        # place their marker at position 0.
+        assert ollie_octopus.get_move(standard_board) == 0
+        standard_board.board = ["X", " ", " ", "X", "O", " ", "O", " ", "X"]
+        # With an "O" in position 1 and 2 the player will win if they
+        # place their marker at position 0.
+        assert ollie_octopus.get_move(standard_board) == 2
+        standard_board.board = ["O", " ", " ", "X", "X", " ", " ", "O", "O"]
+        # With an "O" in position 7 and 8 the player will win if they
+        # place their marker at position 6. It is important to take
+        # this win before blocking the opponents win (at position 5).
+        assert ollie_octopus.get_move(standard_board) == 6
+    
+    def test_block_obvious_loss(self):
+        """Test player takes the position to block the other player
+        winning.
+
+        This tests that the method returns the position on the board
+        which would allow the player to block their opponent from
+        winning.
+        """
+        standard_board.board = ["O", "X", " ", " ", "X", " ", " ", " ", "O"]
+        # With an "X" in position 1 and 4 the player needs to block their
+        # opponent's win by placing their marker at position 7.
+        assert ollie_octopus.get_move(standard_board) == 7
+        standard_board.board = ["O", " ", " ", "X", "X", " ", " ", " ", "O"]
+        # With an "X" in position 3 and 4 the player needs to block their
+        # opponent's win by placing their marker at position 5.
+        assert ollie_octopus.get_move(standard_board) == 5
+        standard_board.board = ["X", " ", "O", "O", "X", " ", " ", " ", " "]
+        # With an "X" in position 0 and 4 the player needs to block their
+        # opponent's win by placing their marker at position 8.
+        assert ollie_octopus.get_move(standard_board) == 8
+    
+
