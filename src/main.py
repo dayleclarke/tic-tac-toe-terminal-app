@@ -4,7 +4,7 @@ import pyfiglet
 from simple_term_menu import TerminalMenu
 import clearing
 import pandas as pd
-from players import UserPlayer, EasyComputerPlayer, ExpertComputerPlayer
+from players import UserPlayer, EasyComputerPlayer, ExpertComputerPlayer, RangeError, OccupiedError
 
 class TicTacToe:
     def __init__(self):
@@ -211,23 +211,22 @@ Here is a table outlining some info about each player including their win and lo
         print(pyfiglet.figlet_format("Katie the Koala", font="digital"))
         return katie_koala
     if opponent_player == "Ollie":
-        print(
-            """
+        print("""
                         ___
                      .-'   `'.
-                    /         \ 
+                    /         \\ 
                     |         ;
                     |         |           ___.--,
            _.._     |0) ~ (0) |    _.---'`__.-( (_.
-    __.--'`_.. '.__.\    '     \_.-' ,.--'`     `""`
+    __.--'`_.. '.__.\\    '     \\_.-' ,.--'`     `""`
    ( ,.--'`   ',__ /./;   ;, '.__.'`    __
-   _`) )  .---.__.' / |   |\   \__..--""  ""--.,_
-  `---' .'.''-._.-'`_./  /\ '.  \ _.-~~~````~~~-._`-.__.'
-        | |  .' _.-' |  |  \  \  '.               `~---`
-         \ \/ .'     \  \   '. '-._)
-          \/ /        \  \    `=.__`~-.
-          / /\         `) )    / / `"".`
-    , _.-'.'\ \        / /    ( (     / /
+   _`) )  .---.__.' / |   |\\   \\__..--""  ""--.,_
+  `---' .'.''-._.-'`_./  /\\ '.  \\ _.-~~~````~~~-._`-.__.'
+        | |  .' _.-' |  |  \\  \\  '.               `~---`
+         \\ \\/ .'     \\  \\   '. '-._)
+          \\/ /        \\  \\    `=.__`~-.
+          / /\\         `) )    / / `"".`
+    , _.-'.'\\ \\        / /    ( (     / /
      `--~`   ) )    .-'.'      '.'.  | (
             (/`    ( (`          ) )  '-;
              `      '-;         (-'
@@ -373,26 +372,45 @@ def play(game, x_player, o_player):
     # Add in option here to play scissor, paper rock to decide who goes first.
     while game.free_positions():
         if turn == x_player.name:
-            position = x_player.get_move(game)
+            while True:
+                try:
+                    position = x_player.get_move(game)
+                    break
+                    # val = int(
+                    #     input("Based on the board shown above,"
+                    #           " enter an integer (0-8) to indicate where you would like to go: "))
+                    # if val not in range(0, 9):
+                    #     raise RangeError(val)
+                    # if val not in game.free_positions():
+                    #     raise OccupiedError(val)
+                    # return val
+                except RangeError as err:
+                    print(err)
+                except OccupiedError as err:
+                    print(err)
+                except ValueError:
+                    print("That isn't a valid integer. Please enter a number with no decimal places.")
+
+            
             game.make_move(position, "X")
             print(f"{x_player.name} makes a move to position {position}")
             game.print_board()
             if game.current_winner:
                 print("Congratulations!!!")
                 print(pyfiglet.figlet_format("You Win!"))
-                print("""
-                                                   .''.       
-       .''.      .        *''*    :_\/_:     . 
-      :_\/_:   _\(/_  .:.*_\/_*   : /\ :  .'.:.'.
-  .''.: /\ :   ./)\   ':'* /\ * :  '..'.  -=:o:=-
- :_\/_:'.:::.    ' *''*    * '.\'/.' _\(/_'.':'.'
- : /\ : :::::     *_\/_*     -= o =-  /)\    '  *
-  '..'  ':::'     * /\ *     .'/.\'.   '
+                print(
+                    """
+                                   .''.
+       .''.      .        *''*    :_\\/_:     .
+      :_\\/_:   _\\(/_  .:.*_\\/_*   : /\\ :  .'.:.'.
+  .''.: /\\ :   ./)\\   ':'* /\\ * :  '..'.  -=:o:=-
+ :_\\/_:'.:::.    ' *''*    * '.\'/.' _\\(/_'.':'.'
+ : /\\ : :::::     *_\\/_*     -= o =-  /)\\    '  *
+  '..'  ':::'     * /\\ *     .'/.\\'.   '
       *            *..*         :
         *
-        *
-                """)
-                print(o_player.record_loss("losses"))
+        """)
+                print(o_player.update_scores("losses"))
                 break
             turn = o_player.name
             continue
@@ -404,24 +422,13 @@ def play(game, x_player, o_player):
             game.print_board()
             if game.current_winner:
                 print(f"Better luck next time! {o_player.name} won the game this time.")
-                df = pd.read_csv("player_scores.csv")
-                print(df)
-                df.loc[df["player_name"] == o_player.name, ["wins", "total_games"]] += 1
-                df["percentage_loss_ratio"] = df["losses"] / df["total_games"]
-                pd.options.display.float_format = "{:.2%}".format
-                print(df)
-                df.to_csv("player_scores.csv", index=False)
+                print(o_player.update_scores("wins"))
                 break
             turn = x_player.name
             continue
     else:
         print("It's a tie!")
-        df = pd.read_csv("player_scores.csv")
-        df.loc[df["player_name"] == o_player.name, ["ties", "total_games"]] += 1
-        df["percentage_loss_ratio"] = df["losses"] / df["total_games"]
-        pd.options.display.float_format = "{:.2%}".format
-        print(df)
-        df.to_csv("player_scores.csv", index=False)
+        print(o_player.update_scores("ties"))
 
 
 
@@ -445,11 +452,12 @@ if __name__ == "__main__":
             "Menu entries can be selected with the arrow or j/k keys.\n"
             )
         user_options= [f"Yes, my name is {player_name.title()}",
-                        "No, I wish to enter my name again"]
+                        "No, I wish to enter my name again."]
         terminal_menu = TerminalMenu(user_options)
         menu_entry_index = terminal_menu.show()
         name_confirmation = user_options[menu_entry_index]
-        if name_confirmation == "No I wish to enter my name again.":
+        print("This is your", name_confirmation)
+        if name_confirmation == "No, I wish to enter my name again.":
             continue
         break
     print("Thank you for confirming that for me. I would hate to call you by the wrong name.")
@@ -468,5 +476,4 @@ if __name__ == "__main__":
         )
         if play_again.lower().strip().startswith("y"):
             continue
-        else:
-            break
+        break

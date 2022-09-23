@@ -84,23 +84,14 @@ class UserPlayer(Player):
         Returns:
             int: the position (between 0-8) the player has chosen to move to.
         """
-        while True:
-            try:
-                val = int(
-                    input("Based on the board shown above,"
-                          " enter an integer (0-8) to indicate where you would like to go: "))
-                if val not in range(0, 9):
-                    raise RangeError(val)
-                if val not in game.free_positions():
-                    raise OccupiedError(val)
-                return val
-            except RangeError as err:
-                print(err)
-            except OccupiedError as err:
-                print(err)
-            except ValueError:
-                print("That isn't a valid integer. Please enter a number with no decimal places.")
-
+        val = int(input("Based on the board shown above,"
+                  " enter an integer (0-8) to indicate where you would like to go: "))
+        if val not in range(0, 9):
+            raise RangeError(val)
+        if val not in game.free_positions():
+            raise OccupiedError(val)
+        return val
+           
 
 class EasyComputerPlayer(Player):
     """A class used to represent the easy computer player."""
