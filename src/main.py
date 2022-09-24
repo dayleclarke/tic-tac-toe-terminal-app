@@ -514,7 +514,26 @@ def create_password():
 
     return password
 
+
 def log_in():
+    print("Welcome back. Please enter your log_in credentials.")
+    username = input("Username: ")
+    df1 = pd.read_csv("user_credentials.csv")
+    df2 = df1.set_index("username", drop = False)
+    stored_password = df2.loc[username,"password"]
+    for i in range(3):
+        user_password = input("Password: ")
+        if user_password == stored_password:
+            print("Login Successfully")
+            return username
+        print("Incorrect password try again")
+    print("Login Failure")
+  
+
+
+def register():
+
+    username= input("Username:")
     print("""Enter a password to associate with your account.
 
 Passwords must:
@@ -524,7 +543,7 @@ Passwords must:
 """)
     while True:
         try:
-            create_password()
+            password= create_password()
             break
         except PasswordLengthError as err:
             print(err)
@@ -535,6 +554,11 @@ Passwords must:
         except ConfirmationError as err:
             print(err)
     
+    df1 = pd.read_csv("user_credentials.csv")
+    df1.loc[len(df1)]=[username, password]
+    df1.to_csv("user_credentials.csv", index=False)
+    
+    
 if __name__ == "__main__":
     clearing.clear()
     pete_panda = EasyComputerPlayer("O", "Pete the Panda")
@@ -542,10 +566,26 @@ if __name__ == "__main__":
     ollie_octopus = ExpertComputerPlayer("O", "Ollie the Octopus")
     danni_dolphin = ExpertComputerPlayer("O", "Danni the Dolphin")
     standard_board = TicTacToeBoard()
-    log_in()
     print("Welcome to ...\n")
     print(pyfiglet.figlet_format("Tic Tac Toe"))
-    print("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+")
+    print("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n")
+    
+    print("How would you like to begin today?")
+    print("Menu entries can be selected with the arrow or j/k keys.\n")
+    login_options = [
+                    "Register as a new user",
+                    "Login as an exsiting user",
+                    "Play as a guest (no log-in required)",
+                    ]
+    terminal_login_menu = TerminalMenu(login_options)
+    menu_entry_index = terminal_login_menu.show()
+    log_in_choice = login_options[menu_entry_index]
+    print(log_in_choice)
+    if log_in_choice == "Register as a new user":
+        register()
+    elif log_in_choice == "Login as an exsiting user":
+        log_in()
+          
     while True:
         player_name = input("What is your name?: ")
         print(
