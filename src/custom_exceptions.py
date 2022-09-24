@@ -51,3 +51,9 @@ class ConfirmationError(Exception):
     """
     def __init__(self):
         super().__init__("The passwords entered do not match. Please try again.")
+
+class InvalidUserError(Exception):
+    """An error raised when the provided username does not exsist in the user_credentials dataframe.
+    """
+    def __init__(self, username):
+        super().__init__(f"{username} is not a valid username. Please try again.")

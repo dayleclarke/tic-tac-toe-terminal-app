@@ -7,6 +7,8 @@ import clearing
 from players import UserPlayer, EasyComputerPlayer, ExpertComputerPlayer
 from custom_exceptions import RangeError, OccupiedError, ConfirmationError
 from custom_exceptions import PasswordLengthError, PasswordCaseError, PasswordTypeError
+from custom_exceptions import InvalidUserError
+from login import register,login
 
 
 class TicTacToeBoard:
@@ -496,69 +498,7 @@ def play(game, x_player, o_player):
         print(o_player.update_scores("ties"))
 
 
-def create_password():
- 
-    password = input("Password: ")
-    if len(password) not in range(5, 11):
-        raise PasswordLengthError()
-    contains_uppercase = any(character.isupper() for character in password)
-    contains_lowercase = any(character.islower() for character in password)
-    contains_int = any(character.isdigit() for character in password)
-    if not contains_uppercase or not contains_lowercase:
-        raise PasswordCaseError()
-    if not contains_int:
-        raise PasswordTypeError()
-    confirm_password = input("Confirm password: ")
-    if password != confirm_password:
-        raise ConfirmationError()
 
-    return password
-
-
-def log_in():
-    print("Welcome back. Please enter your log_in credentials.")
-    username = input("Username: ")
-    df1 = pd.read_csv("user_credentials.csv")
-    df2 = df1.set_index("username", drop = False)
-    stored_password = df2.loc[username,"password"]
-    for i in range(3):
-        user_password = input("Password: ")
-        if user_password == stored_password:
-            print("Login Successfully")
-            return username
-        print("Incorrect password try again")
-    print("Login Failure")
-  
-
-
-def register():
-
-    username= input("Username:")
-    print("""Enter a password to associate with your account.
-
-Passwords must:
-1) be between 5 and 10 characters in length.
-2) contain at least one number 
-3) contain one uppercase and one lowercase letter.
-""")
-    while True:
-        try:
-            password= create_password()
-            break
-        except PasswordLengthError as err:
-            print(err)
-        except PasswordCaseError as err:
-            print(err)
-        except PasswordTypeError as err:
-            print(err)
-        except ConfirmationError as err:
-            print(err)
-    
-    df1 = pd.read_csv("user_credentials.csv")
-    df1.loc[len(df1)]=[username, password]
-    df1.to_csv("user_credentials.csv", index=False)
-    
-    
 if __name__ == "__main__":
     clearing.clear()
     pete_panda = EasyComputerPlayer("O", "Pete the Panda")
@@ -572,22 +512,26 @@ if __name__ == "__main__":
     
     print("How would you like to begin today?")
     print("Menu entries can be selected with the arrow or j/k keys.\n")
-    login_options = [
-                    "Register as a new user",
-                    "Login as an exsiting user",
-                    "Play as a guest (no log-in required)",
-                    ]
-    terminal_login_menu = TerminalMenu(login_options)
-    menu_entry_index = terminal_login_menu.show()
-    log_in_choice = login_options[menu_entry_index]
-    print(log_in_choice)
-    if log_in_choice == "Register as a new user":
-        register()
-    elif log_in_choice == "Login as an exsiting user":
-        log_in()
-          
     while True:
-        player_name = input("What is your name?: ")
+        login_options = [
+                        "Register as a new user",
+                        "Login as an exsiting user",
+                        "Play as a guest (no log-in required)",
+                        ]
+        terminal_login_menu = TerminalMenu(login_options)
+        menu_entry_index = terminal_login_menu.show()
+        log_in_choice = login_options[menu_entry_index]
+        print(log_in_choice)
+        if log_in_choice == "Register as a new user":
+            register()
+        elif log_in_choice == "Login as an exsiting user":
+            login = login()
+            if login is None:
+                continue
+                
+
+    while True:
+        player_name = input("What is your first name?: ")
         print(
             "Hello "
             + player_name.title()
