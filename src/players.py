@@ -1,4 +1,4 @@
-"""A module that contains the player class information.
+"""A module that contains player class information.
 
 Classes for each player type are defined with attributes
 for their name and the letter they are assigned to play
@@ -7,15 +7,19 @@ to select where on the board they should place their letter.
 Relevent classes for user input errors are also defined.
 
 Classes:
-    RangeError(Exception)- An error raised when an integer is outside of the valid range.
-    OccupiedException(Exception)-Error raised when a position is already occupied on the board.
-    Player
-    UserPlayer(Player)- represent the user/human player.
-    EasyComputerPlayer(Player)- represents the easy computer player.
+    RangeError(Exception)- An error raised when an integer is outside
+        of the valid range.
+    OccupiedException(Exception)-Error raised when a position is
+        already occupied on the board.
+    Player-A parent class used to represent a player.
+    UserPlayer(Player)- represents a user/human player.
+    EasyComputerPlayer(Player)- represents an easy computer player.
     ExpertComputerPlayer(Player)- represents an unbeatable computer player.
 """
+
 from random import choice
 import pandas as pd
+
 
 class RangeError(Exception):
     """An error raised when an integer is outside of the valid range."""
@@ -25,7 +29,9 @@ class RangeError(Exception):
 
 
 class OccupiedError(Exception):
-    """An error raised when a player enters a number that is already occupied on the board."""
+    """An error raised when a player enters a number that is already
+    occupied on the board.
+    """
     def __init__(self, val):
         super().__init__(
             f"Position {val} is already occupied on the board. Please try again.")
@@ -35,7 +41,8 @@ class Player:
     """A parent class used to represent a player.
 
     Attributes:
-        letter (str): the letter/marker the player will be assigned on the board.
+        letter (str): the letter/marker the player will be assigned on
+            the board.
         name (str): the player's name.
     """
     def __init__(self, letter, name):
@@ -57,7 +64,8 @@ class Player:
                 "ties", or "losses".
 
         Returns:
-            dataframe: a dataframe showing the updated player_score.csv file.
+            dataframe: a dataframe showing the updated
+                player_score.csv file.
         """
         df = pd.read_csv("player_scores.csv")
         df.loc[df["player_name"] == self.name, [outcome, "total_games"]] += 1
@@ -65,20 +73,20 @@ class Player:
         pd.options.display.float_format = "{:.2%}".format
         df.to_csv("player_scores.csv", index=False)
         return df
-# Make file a parameter, make a test version of file so it doesn't 
+
+
 class UserPlayer(Player):
     """A class used to represent the user/human player."""
-    # def __init__(self, letter, name):
-    #     super().__init__(letter, name)
-
     def get_move(self, game):
-        """The player inputs a position to place their letter which is returned by the method.
+        """The player inputs a position to place their letter which is
+            returned by the method.
 
         Args:
             game: an instance of the TicTacToe class.
 
         Raises:
-            RangeError: if the user selects a position outside the range of 0-8.
+            RangeError: if the user selects a position outside the
+                range of 0-8.
             OccupiedError: if the user selects a position that is already occupied.
 
         Returns:
@@ -91,19 +99,20 @@ class UserPlayer(Player):
         if val not in game.free_positions():
             raise OccupiedError(val)
         return val
-           
+
 
 class EasyComputerPlayer(Player):
     """A class used to represent the easy computer player."""
-
     def get_move(self, game):
-        """Randomly returns a free position on the board to position the player's letter.
+        """Randomly returns a free position on the board to position
+        the player's letter.
 
         Args:
-            game: an instance of the TicTacToe class.
+            game(any): an instance of the TicTacToe class.
 
         Returns:
-            int: the position (between 0-8) the computer will place their marker.
+            int: the position (between 0-8) the computer will place
+                their marker.
        """
         position = choice(game.free_positions())
         return position
@@ -111,59 +120,62 @@ class EasyComputerPlayer(Player):
 
 class ExpertComputerPlayer(Player):
     """A class used to represent an Expert Computer Player."""
-    # def __init__(self, letter, name):
-    #     super().__init__(letter, name)
-
     def get_move(self, game):
-        """Returns the most optimal position on the board to position the player's letter.
+        """Returns the optimal position on the board to place the
+        player's letter.
 
-        If all of the positions on the board are free it will return a random corner position.
-        Otherwise it invokes a recursive minimax function to return the optimal position
-        based which position has the highest utility score.
+        If all the positions on the board are free it will return a
+        random corner position. Otherwise it invokes a recursive
+        minimax function to return the optimal position based on which
+        position has the highest utility score.
 
         Args:
-            game: an instance of the TicTacToe class.
+            game(any): an instance of the TicTacToe class.
 
         Returns:
-            int: the position (between 0-8) which is either a randomly selected corner
-            or the position with the highest utility score.
+            int: the position (between 0-8) which is either a randomly
+                selected corner or the position with the highest
+                utility score.
         """
         if len(game.free_positions()) == 9:
             return choice([0, 2, 6, 8])
         return self.minimax(game, True)["position"]
 
     def minimax(self, state, is_maximising):
-        """A recursive minimax method used to return a utility score for each possible position.
+        """A recursive minimax method used to return a utility score
+        for each possible position.
 
-        The minimax method will continue until one of the following terminal conditions are met:
-            1. The maximising player wins
+        The minimax method will continue until one of the following
+        terminal conditions are met:
+            1. The maximising player wins:
                 Returns:
-                    dict: showing the position previously determined through recursion
-                          and a score of 1 * (the number of empty squares remaining + 1)
-            2. The minimising player wins
+                    dict: showing the position previously determined
+                        through recursion and a score of 1 * (the
+                        number of empty squares remaining + 1).
+            2. The minimising player wins:
                 Returns:
-                    dict: showing the position previously determined through recursion
-                          and a score of -1 * (the number of empty squares remaining + 1)
-            3. There are no positions left on the board.
+                    dict: showing the position previously determined
+                        through recursion and a score of -1 * (the
+                        number of empty squares remaining + 1).
+            3. There are no positions left on the board:
                 Returns:
-                    dict: showing the position previously determined through recursion
-                          and a score of 0
+                    dict: showing the position previously determined
+                        through recursion and a score of 0
         Assumes that the minimising player is also playing optimally.
 
         Args:
-            state: an instance of the TicTacToe class
+            state(any): an instance of the TicTacToe class
                 shows the current board state in that simulation.
-            is_maximising (bool): indicates if it is the maximiser's turn in the simulation.
+            is_maximising(bool): indicates if it is the maximiser's turn in the simulation.
                when it is the maximiser's turn they are playing to get the highest utility score.
                when it is the minimiser's turn they are playing to get the lowest utility score.
 
         Returns:
             dict: showing the position (with an int value between 0-8)
-                and score (an int value)
+                and score (an int value) see terminal conditions above.
         """
-
         maximising_letter = self.letter
-        minimising_letter = "X"
+        minimising_letter = "X" if maximising_letter == "O" else "O"
         # Terminal states
         if state.current_winner:
             return {
@@ -175,28 +187,33 @@ class ExpertComputerPlayer(Player):
         if not state.free_positions():
             return {"position": None, "score": 0}
 
-        # When it is the maximisor's turn they are playing to get the highest utility score.
+        # When it is the maximisor's turn they are playing to get the
+        # highest utility score.
         if is_maximising:
             best_move = {"position": None, "score": -500}
-            for possible_move in (state.free_positions()): # Loop through all free moves remaining.
+            # Loop through all free moves remaining.
+            for possible_move in (state.free_positions()):
                 state.make_move(possible_move, maximising_letter)
-                sim_score = self.minimax(state, False) # Method calls itself to test that move.
-                # The board is then returned to it's original position as this is only a simulation.
+                # Method calls itself to test that move.
+                sim_score = self.minimax(state, False)
+                # The board is then returned to it's original position
                 state.board[possible_move] = " "
                 state.current_winner = None
                 sim_score["position"] = possible_move
                 if sim_score["score"] > best_move["score"]:
                     best_move = sim_score
             return best_move
-        # When it is the minimisor's turn in the simulation the following code will be executed:
+        # When it is the minimisor's turn in the simulation the
+        # following code will be executed:
         # The best move for the maximisor is the lowest utility score.
         best_move = {"position": None, "score": 500}
-        for possible_move in state.free_positions():  
+        for possible_move in state.free_positions():
             state.make_move(possible_move, minimising_letter)
             sim_score = self.minimax(state, True)
             state.board[possible_move] = " "
-            state.current_winner = None 
+            state.current_winner = None
             sim_score["position"] = possible_move
             if sim_score["score"] < best_move["score"]:
                 best_move = sim_score
         return best_move
+        

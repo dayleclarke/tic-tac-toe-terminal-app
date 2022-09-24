@@ -1,21 +1,25 @@
-from random import choice  #Ensure you place any built-in modules first.
+from random import choice
 import time
+import pandas as pd
 import pyfiglet
 from simple_term_menu import TerminalMenu
 import clearing
-import pandas as pd
 from players import UserPlayer, EasyComputerPlayer, ExpertComputerPlayer, RangeError, OccupiedError
 
 class TicTacToe:
     def __init__(self):
-        self.board = [
-            " " for i in range(9)
-        ]  # we will use a singe list to rep 3x3 board
-        self.current_winner = None  # Keep track of the winner
+        # Creates a "board" which is a list containing 9 empty strings
+        self.board = [" " for i in range(9)]
+        # Keeps track of the winner which starts out as None.
+        self.current_winner = None
 
     @staticmethod
     def board_number_indices():
-        # 0 | 1 | 2 | (this tells us what number corresponds to what box)
+        """Visualisation of board with number indices.
+
+        A visualisation printed to the terminal showing the 3x3 board
+        which shows which number each position corresponds to.
+        """
         number_board = [[str(i) for i in range(j * 3, (j + 1) * 3)] for j in range(3)]
         print("-------------")
         for row in number_board:
@@ -23,18 +27,22 @@ class TicTacToe:
         print("-------------\n")
 
     def print_board(self):
-        # The calaculates the rows
+        """Visualisation of the 3X3 board showing where letters have
+        been placed and where free spaces remain.
+        """
         print("-------------")
-        for row in [
-            self.board[i * 3 : (i + 1) * 3] for i in range(3)
-        ]:  # If time try and change this to match the num pad on the key board.
+        for row in [self.board[i * 3 : (i + 1) * 3] for i in range(3)]:
             print("| " + " | ".join(row) + " |")
         print("-------------")
 
     def free_positions(self):
-        return [
-            i for i, position in enumerate(self.board) if position == " "
-        ]  # List comprehension outlining all the free spots available on the board.
+        """List comprehension which returns all the number indices of
+        all free spots available on the board.
+
+        Returns:
+            list: the number indices of all " " positions on the board.
+        """
+        return [i for i, position in enumerate(self.board) if position == " "]  
 
     def empty_squares(self): 
     # This will return true if there are empty squares on the board. False means all the positions are taken.
