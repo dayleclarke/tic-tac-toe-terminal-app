@@ -5,7 +5,9 @@ import pyfiglet
 from simple_term_menu import TerminalMenu
 import clearing
 from players import UserPlayer, EasyComputerPlayer, ExpertComputerPlayer
-from players import RangeError, OccupiedError
+from custom_exceptions import RangeError, OccupiedError, ConfirmationError
+from custom_exceptions import PasswordLengthError, PasswordCaseError, PasswordTypeError
+
 
 class TicTacToeBoard:
     """A class used to represent a 3x3 TicTactoe board
@@ -494,7 +496,45 @@ def play(game, x_player, o_player):
         print(o_player.update_scores("ties"))
 
 
+def create_password():
+ 
+    password = input("Password: ")
+    if len(password) not in range(5, 11):
+        raise PasswordLengthError()
+    contains_uppercase = any(character.isupper() for character in password)
+    contains_lowercase = any(character.islower() for character in password)
+    contains_int = any(character.isdigit() for character in password)
+    if not contains_uppercase or not contains_lowercase:
+        raise PasswordCaseError()
+    if not contains_int:
+        raise PasswordTypeError()
+    confirm_password = input("Confirm password: ")
+    if password != confirm_password:
+        raise ConfirmationError()
 
+    return password
+
+def log_in():
+    print("""Enter a password to associate with your account.
+
+Passwords must:
+1) be between 5 and 10 characters in length.
+2) contain at least one number 
+3) contain one uppercase and one lowercase letter.
+""")
+    while True:
+        try:
+            create_password()
+            break
+        except PasswordLengthError as err:
+            print(err)
+        except PasswordCaseError as err:
+            print(err)
+        except PasswordTypeError as err:
+            print(err)
+        except ConfirmationError as err:
+            print(err)
+    
 if __name__ == "__main__":
     clearing.clear()
     pete_panda = EasyComputerPlayer("O", "Pete the Panda")
@@ -502,6 +542,7 @@ if __name__ == "__main__":
     ollie_octopus = ExpertComputerPlayer("O", "Ollie the Octopus")
     danni_dolphin = ExpertComputerPlayer("O", "Danni the Dolphin")
     standard_board = TicTacToeBoard()
+    log_in()
     print("Welcome to ...\n")
     print(pyfiglet.figlet_format("Tic Tac Toe"))
     print("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+")

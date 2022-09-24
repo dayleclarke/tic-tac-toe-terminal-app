@@ -19,22 +19,7 @@ Classes:
 
 from random import choice
 import pandas as pd
-
-
-class RangeError(Exception):
-    """An error raised when an integer is outside of the valid range."""
-    def __init__(self, val):
-        super().__init__(
-            f"{val} is not a valid position on the board. The number must be between 0 and 8.")
-
-
-class OccupiedError(Exception):
-    """An error raised when a player enters a number that is already
-    occupied on the board.
-    """
-    def __init__(self, val):
-        super().__init__(
-            f"Position {val} is already occupied on the board. Please try again.")
+from custom_exceptions import RangeError, OccupiedError
 
 
 class Player:
