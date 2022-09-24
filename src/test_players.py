@@ -8,13 +8,13 @@ Functions:
 
 """
 import pytest
-from main import UserPlayer, ExpertComputerPlayer, TicTacToe
+from main import UserPlayer, ExpertComputerPlayer, TicTacToeBoard
 from players import RangeError, OccupiedError
 
 
 user_player_1 = UserPlayer("X", "Dayle")
 ollie_octopus = ExpertComputerPlayer("O", "Ollie the Octopus")
-standard_board = TicTacToe()
+standard_board = TicTacToeBoard()
 
 def fake_input(monkeypatch, user_input):
     """Patchs input data with a "monkeypatch" (fake inputs).

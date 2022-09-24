@@ -1,22 +1,22 @@
 """A series of tests run on the main.py file.
 
 Classes:
-    TestWinner-used to test winner() method of the TicTacToe class.
+    TestWinner-used to test winner() method of the TicTacToeBoard class.
 
 Functions:
-    test_empty_squares()- Tests empty_squares method() of the TicTacToe class.
-    test_free_positions()- Tests free_positions method() of the TicTacToe class.
-    test_num_empty_squares()- Tests num_empty_squares method() of the TicTacToe class.
+    test_empty_squares()- Tests empty_squares method() of the TicTacToeBoard class.
+    test_free_positions()- Tests free_positions method() of the TicTacToeBoard class.
+    test_num_empty_squares()- Tests num_empty_squares method() of the TicTacToeBoard class.
 """
 import pytest
-from main import UserPlayer, EasyComputerPlayer, TicTacToe
+from main import UserPlayer, EasyComputerPlayer, TicTacToeBoard
 
 user_player_1 = UserPlayer("X", "Dayle")
 pete_panda = EasyComputerPlayer("O", "Pete the Panda")
-standard_board = TicTacToe()
+standard_board = TicTacToeBoard()
 
 class TestWinner:
-    """A class used to test winner() method of the TicTacToe class."""
+    """A class used to test winner() method of the TicTacToeBoard class."""
 
     def test_winner_diagonal(self):
         """Test method's ability to identify a diagonal win.
@@ -70,14 +70,14 @@ class TestWinner:
         assert standard_board.winner(1, "O") is False
 
 def test_empty_squares():
-    """Used to test empty_squares method() of the TicTacToe class."""
+    """Used to test empty_squares method() of the TicTacToeBoard class."""
     standard_board.board = ["X", " ", " ", "X", "O", " ", "X", " ", "O"]
     assert standard_board.empty_squares() is True
     standard_board.board = ["X", "X", "O ", "X", "O", "O", "X", "O", "O"]
     assert standard_board.empty_squares() is False
 
 def test_free_positions():
-    """Used to test free_positions method() of the TicTacToe class.
+    """Used to test free_positions method() of the TicTacToeBoard class.
 
     Different simulated board positions are provided for this test to
     ensure it returns the index position of any free positions
@@ -91,7 +91,7 @@ def test_free_positions():
     assert standard_board.free_positions() == []
 
 def test_num_empty_squares():
-    """Used to test num_empty_squares method() of the TicTacToe class.
+    """Used to test num_empty_squares method() of the TicTacToeBoard class.
 
     Different simulated board positions are provided for this test to
     ensure it returns the total number of free positions remaining on

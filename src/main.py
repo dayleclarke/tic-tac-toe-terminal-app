@@ -4,11 +4,20 @@ import pandas as pd
 import pyfiglet
 from simple_term_menu import TerminalMenu
 import clearing
-from players import UserPlayer, EasyComputerPlayer, ExpertComputerPlayer, RangeError, OccupiedError
+from players import UserPlayer, EasyComputerPlayer, ExpertComputerPlayer
+from players import RangeError, OccupiedError
 
-class TicTacToe:
+class TicTacToeBoard:
+    """A class used to represent a 3x3 TicTactoe board
+
+    Attributes:
+        board(list): A list to represent the 9 positions of the board.
+        current_winner (bool or str): False if there is no current
+            winner or the letter belonging to the current winner if
+            there is one.
+    """
     def __init__(self):
-        # Creates a "board" which is a list containing 9 empty strings
+        # Creates a "board" which is a list containing 9 " " strings
         self.board = [" " for i in range(9)]
         # Keeps track of the winner which starts out as None.
         self.current_winner = None
@@ -42,75 +51,110 @@ class TicTacToe:
         Returns:
             list: the number indices of all " " positions on the board.
         """
-        return [i for i, position in enumerate(self.board) if position == " "]  
+        return [i for i, position in enumerate(self.board) if position == " "]
 
-    def empty_squares(self): 
-    # This will return true if there are empty squares on the board. False means all the positions are taken.
+    def empty_squares(self):
+        """This method returns True if empty spaces remain on the
+        board. It will return False otherwise.
+
+        Returns:
+            bool: True if a " " string item remains in the board. False
+                otherwise.
+        """
         return " " in self.board
 
     def num_empty_squares(self):
+        """This method returns the number of empty spaces remaining on
+        the board.
+
+        Returns:
+            int: The number of " " string items remaining on the board.
+        """
         return self.board.count(" ")
 
     def make_move(self, position, letter):
+        """A method to place a player's letter onto the board.
+
+        Args:
+            position (int): the position (between 0-8) on the board to
+            place the letter.
+            letter (str): "X" or "O" depending on whose turn it is.
+        """
         if self.board[position] == " ":
             self.board[position] = letter
             if self.winner(position, letter):
                 self.current_winner = letter
 
-    # def test_move(self, possible_move, player_letter):
-    #     if self.board[possible_move] == " ":
-    #         self.board[possible_move] = player_letter
-    #     if self.winner(possible_move, player_letter):
-    #         return True
-    #     else:
-    #         return False
 
     def winner(self, position, letter):
-        # winner if 3 in a row anywhere. Must check row, column and both diagonals
-        # row check
-        row_index = (
-            position // 3
-        )  # how many times is the position index divisable by 3?  This will indicate its row (either 0, 1 or 2).
-        row = self.board[
-            row_index * 3 : (row_index + 1) * 3
-        ]  # This selects the entire row that the position is in.
-        if all([square == letter for square in row]):
-            return True
+        """A method that checks to see if the last move made
+        created a winner.
 
-        # column check
-        col_index = (
-            position % 3
-        )  # When you divide the position by 3 what is left over? (Position modu 3 will indicate its column index (either 0, 1 or 2))
+        It will analyse the current state of the board at the provided
+        position to see if the last player's letter appears 3 times in
+        a row either horizontally, vertically or diagonally.
+
+        Limitations: Must be called after the player has made their move.
+        It accesses the win state based on the position provided.
+        But both diagonals of the board are checked. Returns True if
+        there is a winner but doesn't return or print which player is
+        the winner.
+
+        Args:
+            position (int): the position (between 0-8) on the board
+                that was last played.
+            letter (str): "X" or "O" depending on which player last
+                made a move.
+
+        Returns:
+            bool: True if there is a current winner, False otherwise.
+        """
+        # Analysing the row at the position last played
+        # The number of times the position index is divisable by 3
+        # indicates it's row index (either 0, 1 or 2).
+        row_index = (position // 3)
+        # This selects the entire row that the position is in.
+        row = self.board[row_index * 3 : (row_index + 1) * 3]
+        # If the letter is in all of the squares on this row
+        # then there is a winner.
+        if all(square == letter for square in row):
+            return True
+        # Analysing the column at the position last played
+        # Position modulus 3 will indicate its column index
+        # (either 0, 1 or 2).
+        col_index = (position % 3)
+          # This selects the entire column that the position is in.
         column = [self.board[col_index + i * 3] for i in range(3)]
-        if all([square == letter for square in column]):
+        if all(square == letter for square in column):
             return True
-
-        # diagonal check
-        # diagonals left to right are on (0, 4, 8)
-        # diagonals right to left are on (2, 4, 6)
-        if position % 2 == 0:  # Only even numbers run along the diagonal
-            diagonal1 = [self.board[i] for i in [0, 4, 8]]
-            if all([square == letter for square in diagonal1]):
-                return True
-            diagonal2 = [self.board[i] for i in [2, 4, 6]]
-            if all([square == letter for square in diagonal2]):
-                return True
-
+        # Analysing both diagonal positions (0, 4, 8) and (2, 4, 6).
+        diagonal1 = [self.board[i] for i in [0, 4, 8]]
+        if all(square == letter for square in diagonal1):
+            return True
+        diagonal2 = [self.board[i] for i in [2, 4, 6]]
+        if all(square == letter for square in diagonal2):
+            return True
         # If all checks fail there is no winner return False
         return False
 
     def reset_board(self):
-        self.board = [
-            " " for i in range(9)
-        ]  # we will use a singe list to rep 3x3 board
+        """Resets the board to all blank squares with no winner.
+
+        Replaces the "board" to the original list of " " strings.
+        Returns the current winner to None.
+        """
+        self.board = [" " for i in range(9)]
         self.current_winner = None
 
+
 def select_opponent():
-    """Collects user input and returns the opponent they have selected to play against."""
+    """Collects user input and returns the opponent they have selected
+    to play against."""
     print(
 """Lots of players are around today who would love to play Tic-Tac-Toe with you.
 They each have different skill levels and experience.
-Here is a table outlining some info about each player including their win and loss history:\n"""
+Here is a table outlining info about each player including their win, tie, and loss history:\n
+"""
         )
     time.sleep(0.8)
     df = pd.read_csv("player_scores.csv")
@@ -120,14 +164,14 @@ Here is a table outlining some info about each player including their win and lo
         "To help select the correct player for you, what difficulty level would you like"
         " to play on? \nMenu entries can be selected with the arrow or j/k keys.\n"
         )
-    difficulty_options= ["easy mode", "expert mode"]
+    difficulty_options = ["Easy Mode", "Expert Mode"]
     difficulty_terminal_menu = TerminalMenu(difficulty_options, title="Game difficulty level:")
     difficulty_entry_index = difficulty_terminal_menu.show()
     user_difficulty = difficulty_options[difficulty_entry_index]
     print(f"You have chosen to play on {user_difficulty}.")
     time.sleep(0.8)
 
-    if user_difficulty == "easy mode":
+    if user_difficulty == "Easy Mode":
         print("There are two players who I recommend you challenge to a game.\n")
         print(
             f"Firstly there is the {df.at[0,'personality']} {df.at[0,'player_name']}. "
@@ -136,19 +180,19 @@ Here is a table outlining some info about each player including their win and lo
             )
         print(
             f"Secondly there is {df.at[1,'player_name']}. "
-            f"She is {df.at[0,'personality']} but is too focused on eating "
+            f"She is {df.at[0,'personality']} but is too busy eating "
             "eucalyptus leaves to focus long enough to consistently win. "
             f"She has won {df.at[0,'wins']} games out of {df.at[0,'total_games']}.\n"
             )
         print(
-            "You can select any player that you like but if you wish to play on easy "
+            "You can select any player you like but if you wish to play on easy "
             "mode those are the two I recommend.\n"
             )
-    elif user_difficulty == "expert mode":
-        print("There are two players who I recommend you challenge to a game.\n")
+    elif user_difficulty == "Expert Mode":
+        print("There are two players I recommend you challenge to a game.\n")
         print(
             f"Firstly there is the {df.at[2,'personality']} {df.at[2,'player_name']}. "
-            "He is currently undefeated having never lost a game. He he has won "
+            "He is currently undefeated having never lost a game. He has won "
             f"{df.at[0,'wins']} games out of {df.at[0,'total_games']}."
             )
         print(
@@ -161,11 +205,11 @@ Here is a table outlining some info about each player including their win and lo
             "mode those are the two I recommend to appropriately test your abilities.\n"
             )
 
-    opponent_options= [
+    opponent_options = [
         "Pete the Panda (easy mode)",
         "Katie the Koala (easy mode)",
-        "Ollie the Octopus (expert Mode)",
-        "Danni the Dolphin (expert Mode)",
+        "Ollie the Octopus (expert mode)",
+        "Danni the Dolphin (expert mode)",
         ]
     print("Menu entries can be selected with the arrow or j/k keys.\n")
     opponent_terminal_menu = TerminalMenu(
@@ -301,7 +345,6 @@ def select_starting_player(user_player, computer_player):
 """,
 }
     print("We will begin by playing scissors-paper-rock to determine which player will start.")
-
     while True:
         print("Menu entries can be selected with the arrow or j/k keys.")
         gesture_options = list(hand_gestures.keys())
@@ -373,11 +416,33 @@ def select_starting_player(user_player, computer_player):
 
 
 def play(game, x_player, o_player):
+    """A function used to play one complete game of TicTacToe.
+
+    This function calls the select_starting_player() function to
+    determine which player will start the game. While there are free
+    positions left on the board players will alternate turns (by
+    invoking the make_move() method of each player) and placing
+    their marker in one of the 9 positions on the board. The game will
+    continue in this way until a player places 3 markers in a row
+    horizontally, vertically or diagonally or the board fills up.
+    The win status is checked in the make_method() after each player
+    places their marker. Instructions are printed to the terminal to
+    guide the user how to place the game.
+
+    At the end of the game the outcome is printed to the terminal and
+    both player's score history is updated in a seperate player_scores
+    csv file.
+
+    Args:
+        game: an instance of the TicTacToeBoard class.
+        x_player: an instance of the HumanPlayer class.
+        o_player: an instance of the Player class.
+            based on the opponent previously selected by the user.
+    """
     turn = select_starting_player(user_player_1.name, opponent.name)
     print("Our game will be played on a 3 by 3 board using the following positions.\n")
     standard_board.board_number_indices()
     print("Commencing game....")
-    # Add in option here to play scissor, paper rock to decide who goes first.
     while game.free_positions():
         if turn == x_player.name:
             while True:
@@ -390,20 +455,8 @@ def play(game, x_player, o_player):
                     print(err)
                 except ValueError:
                     print("That isn't a valid integer. Please enter a number with no decimal places.")
-
-            
-
-                                # val = int(
-                    #     input("Based on the board shown above,"
-                    #           " enter an integer (0-8) to indicate where you would like to go: "))
-                    # if val not in range(0, 9):
-                    #     raise RangeError(val)
-                    # if val not in game.free_positions():
-                    #     raise OccupiedError(val)
-                    # return val
             game.make_move(position, "X")
             print(f"{x_player.name} makes a move to position {position}")
-            print(game.free_positions())
             game.print_board()
             if game.current_winner:
                 print("Congratulations!!!")
@@ -424,7 +477,7 @@ def play(game, x_player, o_player):
                 break
             turn = o_player.name
             continue
-        elif turn == o_player.name:
+        if turn == o_player.name:
             time.sleep(1)
             position = o_player.get_move(game)
             game.make_move(position, "O")
@@ -448,7 +501,7 @@ if __name__ == "__main__":
     katie_koala = EasyComputerPlayer("O", "Katie the Koala")
     ollie_octopus = ExpertComputerPlayer("O", "Ollie the Octopus")
     danni_dolphin = ExpertComputerPlayer("O", "Danni the Dolphin")
-    standard_board = TicTacToe()
+    standard_board = TicTacToeBoard()
     print("Welcome to ...\n")
     print(pyfiglet.figlet_format("Tic Tac Toe"))
     print("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+")
@@ -461,12 +514,11 @@ if __name__ == "__main__":
             "Can you please confirm I have your name spelt correctly? "
             "Menu entries can be selected with the arrow or j/k keys.\n"
             )
-        user_options= [f"Yes, my name is {player_name.title()}",
+        user_options = [f"Yes, my name is {player_name.title()}",
                         "No, I wish to enter my name again."]
         terminal_menu = TerminalMenu(user_options)
         menu_entry_index = terminal_menu.show()
         name_confirmation = user_options[menu_entry_index]
-        print("This is your", name_confirmation)
         if name_confirmation == "No, I wish to enter my name again.":
             continue
         break

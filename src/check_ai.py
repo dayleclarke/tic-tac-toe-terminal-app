@@ -21,7 +21,7 @@ Functions:
 """
 from random import choice
 import pandas as pd
-from main import EasyComputerPlayer, ExpertComputerPlayer, TicTacToe
+from main import EasyComputerPlayer, ExpertComputerPlayer, TicTacToeBoard
 
 def check_update_scores(outcome, player):
     """Reads and updates player's scores in a separate csv file.
@@ -51,7 +51,7 @@ def game_testing_ai(game, x_player, o_player):
     results of the game to a separate csv file.
 
     Args:
-        game(any): An instance of the TicTacToe class.
+        game(any): An instance of the TicTacToeBoard class.
         x_player(any): an instance of either the ExpertComputerPlayer or the
                 EasyComputerPlayer
         o_player(any): an instance of either the ExpertComputerPlayer or the
@@ -83,7 +83,7 @@ def game_testing_ai(game, x_player, o_player):
         check_update_scores("tie", o_player)
         check_update_scores("tie", x_player)
 
-standard_board = TicTacToe()
+standard_board = TicTacToeBoard()
 katie_koala = EasyComputerPlayer("O", "Katie the Koala")
 ollie_octopus = ExpertComputerPlayer("O", "Ollie the Octopus")
 
