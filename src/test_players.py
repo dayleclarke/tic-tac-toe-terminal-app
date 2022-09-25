@@ -12,7 +12,7 @@ from main import UserPlayer, ExpertComputerPlayer, TicTacToeBoard
 from players import RangeError, OccupiedError
 
 
-user_player_1 = UserPlayer("X", "Dayle")
+user_player_1 = UserPlayer("X", "Dayle", "Dayle01")
 ollie_octopus = ExpertComputerPlayer("O", "Ollie the Octopus")
 standard_board = TicTacToeBoard()
 

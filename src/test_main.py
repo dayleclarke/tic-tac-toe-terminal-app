@@ -11,7 +11,7 @@ Functions:
 import pytest
 from main import UserPlayer, EasyComputerPlayer, TicTacToeBoard
 
-user_player_1 = UserPlayer("X", "Dayle")
+user_player_1 = UserPlayer("X", "Dayle", "Dayle01")
 pete_panda = EasyComputerPlayer("O", "Pete the Panda")
 standard_board = TicTacToeBoard()
 
@@ -106,7 +106,3 @@ def test_num_empty_squares():
     standard_board.board = ["X", "O", "O", "X", "O", "X", "X", "O", "X"]
     assert standard_board.num_empty_squares() == 0
 
-def test_board_number_indices(capsys):
-    standard_board.board_number_indices()
-    stdout, stderr = capsys.readouterr()
-    assert stdout == '-------------\n| 0 | 1 | 2 |\n| 3 | 4 | 5 |\n| 6 | 7 | 8 |\n-------------\n\n'

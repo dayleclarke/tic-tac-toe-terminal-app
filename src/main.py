@@ -164,7 +164,7 @@ Here is a table outlining info about each player including their win, tie, and l
     df = pd.read_csv("player_scores.csv")
     df_computer_players = df.head(4)
     pd.options.display.float_format = "{:.2%}".format
-    print(df_computer_players,"\n")
+    print(df_computer_players.to_string(index=False),"\n")
     print(
         "To help select the correct player for you, what difficulty level would you like"
         " to play on? \nMenu entries can be selected with the arrow or j/k keys.\n"
@@ -478,7 +478,9 @@ def play(game, x_player, o_player):
       *            *..*         :
         *
         """)
-                print(o_player.update_scores("losses"))
+                o_player.update_scores("losses")
+                print(pyfiglet.figlet_format("Top 10 Players", font="digital"))
+                print(x_player.update_scores("wins"))
                 break
             turn = o_player.name
             continue
@@ -490,13 +492,17 @@ def play(game, x_player, o_player):
             game.print_board()
             if game.current_winner:
                 print(f"Better luck next time! {o_player.name} won the game this time.")
-                print(o_player.update_scores("wins"))
+                o_player.update_scores("wins")
+                print(pyfiglet.figlet_format("Top 10 Players", font="digital"))
+                print(x_player.update_scores("losses"))
                 break
             turn = x_player.name
             continue
     else:
         print("It's a tie!")
-        print(o_player.update_scores("ties"))
+        o_player.update_scores("ties")
+        print(pyfiglet.figlet_format("Top 10 Players", font="digital"))
+        print(x_player.update_scores("ties"))
 
 
 
