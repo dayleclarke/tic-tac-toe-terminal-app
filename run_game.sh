@@ -8,13 +8,11 @@ then
     then
         echo "You have the correct version of python installed."
     else
-        echo "You have an outdated version of python" >&2
-        sudo add-apt-repository ppa:deadsnakes/ppa
-        sudo apt-get update
-        sudo apt-get install python3.9 python3-pip
+        echo "You have an outdated version of python. Please update your version of python." >&2
+        
     fi 
 else
-    echo "You don't have python, go get it!" >&2
+    echo "You don't have python, please install it to run the application!" >&2
 fi
 echo "First I will create a virtual environment using the standard name .venv"
 python3 -m venv .venv 

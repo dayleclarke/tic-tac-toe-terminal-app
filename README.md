@@ -3,7 +3,7 @@
 ## [Github Repo](https://github.com/dayleclarke/tic-tac-toe-terminal-app)
 ## [Source Control Repo](https://github.com/dayleclarke/tic-tac-toe-terminal-app/commits/main)
 ## [Trello Board Link](https://trello.com/invite/b/hD2rPgcC/98a0e6575fc9f7a34044f110c525874d/terminal-app-tic-tac-toe)
-## [Video Link](https://youtu.be/h-h2Lzclsws)
+## [Video Link](https://youtu.be/W5GuhhKzXoE)
 ---
 
 ## Statement of Purpose and Scope
@@ -76,6 +76,7 @@ At the start of each day, I reviewed the implementation plan to see the most cri
 ![TrelloBoard_22nd_Sep_Board](./docs/TrelloBoard_22nd_Sep.png)
 
 ## Flow Charts
+
 An important step in my implementation plan involved creating flow charts to outline how each feature would run indicating the processes, tasks, actions, and operations that would be performed.
 
 Creating a flow chart was particularly important for implementing feature 2 (the expert computer player using a recursive minimax algorithm.  Figure 5 below shows a flow chart outlining the control flow and steps involved in the get_move() and minmax() methods of the ExpertComputerPlayer class that allow it to select the optimal move each time. 
@@ -87,41 +88,118 @@ A flow chart was also particularly helpful when implementing feature 3- (the gam
 
 ## Installation Instructions
 
-Currently, this terminal application is only supported on Linux and macOS.  Windows 10 users can still use the application but must run the application through the Windows Subsystem for Linux (WSL) (Ubutu)  are supported.
+Currently, this terminal application is only supported on Linux and macOS (simple-term-menu is not compatible with Windows Terminal/Powershell).  Windows 10 users can still use the application but must run the app through the Windows Subsystem for Linux (WSL) (Ubuntu).
 Windows Users Guide:
 
-### Step 1: If you are a Windows user without a WSL: Download and install Ubuntu 22.04 (or the latest version) WSL from the Microsoft Store
+### Step 1: Open the terminal
 
-Once it installs it will prompt you to enter a username and password. This is for your Ubuntu environment.  It doesn't related to your Windows username and password. Pick a username without spaces or special characters that is easy to type and remember. Choose a password you will remember (you’ll have to use it often to install tools).For detailed instructions see this documentation https://janelbrandon.medium.com/a-guide-for-using-wsl-for-development-d135670313a6
+If you are a Windows user without a WSL: Download and install Ubuntu 22.04 (or the latest version) WSL from the Microsoft Store
 
-### Step 2: Check which version (if any) of Python you have installed and download/update Python if required
+Once it installs it will prompt you to enter a username and password. This is for your Ubuntu environment.  It doesn't relate to your Windows username and password. Pick a username without spaces or special characters that is easy to type and remember. Choose a password you will remember (you’ll have to use it often to install tools).For detailed instructions see this documentation: [Using WSL instructions](https://janelbrandon.medium.com/a-guide-for-using-wsl-for-development-d135670313a6)
+
+### Step 2: Check which version (if any) of Python you have installed and download/update Python if required.
+
+#### Linux Systems 
 
 Python is typically installed by default on most Linux systems. To check your current version, open a terminal and run the following command:
 
-```
+```bash
 python --version
 ```
+
 If you have a version less than 3.6 it is recommended that you update Python using the following commands:
-```
+```bash
 sudo add-apt-repository ppa:deadsnakes/ppa
 sudo apt-get update
 sudo apt-get install python3.9 python3-pip
 ```
 
-Step 3: Locate the folder where you would like to save the terminal application. Then when you are inside the folder Clone the repository from Github using the following command:
+#### MacOS
 
-```
+On Mac the recommended way to install python is to use the official Python.org installer. Instructions for this can be found HERE: 
+[macOS instructions](https://wsvincent.com/install-python/#install-python-on-macos)
+
+### Step 3: Locate the folder where you would like to save the terminal application. Then when you are inside the folder Clone the repository from Github using the following command:
+
+```bash
 git clone https://github.com/dayleclarke/tic-tac-toe-terminal-app.git
 ```
+
 This was created from the GitHub repository as shown here:
 ![Flow Chart MiniMax Method](docs/gitclone.png)
 
-Step 4:
-Open the folder that was cloned:
-```
+### Step 4: Open the folder that was cloned:
+```bash 
 cd tic-tac-toe-terminal-app
 ```
+### Step 5: Run the following executable
+```bash 
+bash run_game.sh
+```
+This will automatically run the following bash script.  It will:
+* check to ensure you have python 3 installed on your system and provide a warning message if that isn't the case. 
+* Create a virtual environment using the standard name .venv.
+* Activate the virtual environment
+* Install all of the dependencies of the application stored within a seperate requirements.txt file.
+* Run the python file
+* Deactivate the virtual environment when the application is closed. 
 
+```bash
+#!/bin/bash
+echo "Hello! Thank you for downloading this terminal application."
+cd ./src;
+if [[ -x "$(command -v python3)" ]]
+then
+    pyv="$(python3 -V 2>&1)"
+    if [[ $pyv == "Python 3"* ]]
+    then
+        echo "You have the correct version of python installed."
+    else
+        echo "You have an outdated version of python. Please update your version of python." >&2
+        
+    fi 
+else
+    echo "You don't have python, please install it to run the application!" >&2
+fi
+echo "First I will create a virtual environment using the standard name .venv"
+python3 -m venv .venv 
+echo "Next I will activate the virtual environment"
+source .venv/bin/activate
+echo "Now I will install all of the dependencies of the application"
+pip install -r ./requirements.txt
+echo "Now we can run the python file"
+python3 ./main.py
+deactivate
+```
+### Dependencies
+
+
+```
+attrs==22.1.0
+black==22.8.0
+clearing==1.0.0
+click==8.1.3
+colorama==0.4.5
+iniconfig==1.1.1
+mypy-extensions==0.4.3
+numpy==1.23.3
+packaging==21.3
+pandas==1.5.0
+pathspec==0.10.1
+platformdirs==2.5.2
+pluggy==1.0.0
+py==1.11.0
+pyfiglet==0.8.post1
+pyparsing==3.0.9
+pytest==7.1.3
+python-dateutil==2.8.2
+pytz==2022.2.1
+simple-term-menu==1.5.0
+six==1.16.0
+tomli==2.0.1
+typing-extensions==4.3.0
+```
+### Testing
 
 
 ## Reference List
@@ -133,7 +211,3 @@ Stark, J. G. (2022). Marsupials. Retrieved September 20, 2022, from Injosoft ASC
 Stark, J. G. (2022). Pandas. Retrieved September 20, 2022, from Injosoft ASCII Art Archive: https://www.asciiart.eu/animals/dolphins
 
 
-
-
-
-The criteria states: Uses input and output in TWO OR MORE SOPHISTICATED ways in an application, demonstrating DEEP AND NUANCED UNDERSTANDING of input and output in Python. I think I have multiple forms of output- (my program updates player's score in a separate csv file,  and there are lots of different types of print statements (ASCII font, tables as well as standard text) but the only input I take from the user is from input statements. If we get  (although these have yes/no responses, multiple choice questions, free form string statements such as entering their name) and that are converted into integers.  
