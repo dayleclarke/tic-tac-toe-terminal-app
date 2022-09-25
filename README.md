@@ -203,11 +203,37 @@ typing-extensions==4.3.0
 
 
 ## Reference List
+
+References
+Asif, M. (2021). Python for Geeks: Build production-ready applications using advanced Python concepts and industry best practices. Birmingham: Packt Publishing.
+
 David Middlehurst. (2022). ASCII.co. Retrieved September 20, 2022, from OCTOPUS - ASCII ART: https://ascii.co.uk/art/octopus
+
 Karlsson, V. (2022). Hand Gestures- Nonverbal Communication - Signals. Retrieved September 19, 2022, from Injosoft ASCII Art Archive: https://www.asciiart.eu/people/body-parts/hand-gestures
+
+Krivokuća, M. (n.d.). Stack Abuse. Retrieved from Minimax with Alpha-Beta Pruning in Python: https://stackabuse.com/minimax-and-alpha-beta-pruning-in-python/
+
 Kwasniewski, M. '. (2022). Dolphins. Retrieved September 20, 2022, from Injosoft ASCII Art Archive: https://www.asciiart.eu/animals/dolphins
+
 lgbeard. (2022). Fireworks. Retrieved September 20, 2022, from Injosoft ASCII Art Archive: https://www.asciiart.eu/holiday-and-events/fireworks
+
+Lutz, M. (2013). Learning Python-Powerful Object-Oriented Programming : 5th Edition. Sebastopol, California: O'Reilly Media, Inc,.
+
+MDN. (2022). Mozilla Corporation. Retrieved August 30, 2022, from Domain Name System: https://developer.mozilla.org/en-US/docs/Glossary/DNS
+
+Romano, F., & Kruger, H. (2021). Learn Python Programming Third Edition. Birmingham: Packt Publishing.
+Rossum, D. G. (2022, June 6). PEP 257 – Docstring Conventions. Retrieved from Python Enhancement Proposals: https://peps.python.org/pep-0257/
+
+Rossum, G., Warsaw, B., & Coghlan, N. (2022, May 11). PEP 8 – Style Guide for Python Code. Retrieved 21 2022, September, from Python.org: https://peps.python.org/pep-0008/
+
+Ruana, R. (2017). Example Google Style Python Docstrings. Retrieved from Style Guides: https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html
+
 Stark, J. G. (2022). Marsupials. Retrieved September 20, 2022, from Injosoft ASCII Art Archive: https://www.asciiart.eu/animals/marsupials
+
 Stark, J. G. (2022). Pandas. Retrieved September 20, 2022, from Injosoft ASCII Art Archive: https://www.asciiart.eu/animals/dolphins
+
+TheSharperDev. (2020). Implementing Minimax Tree Search. Retrieved from TheSharperDev: https://thesharperdev.com/implementing-minimax-tree-search/
+
+
 
 
