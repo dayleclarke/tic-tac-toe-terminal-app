@@ -10,7 +10,6 @@ from custom_exceptions import RangeError, OccupiedError
 from login import register,login
 
 
-
 class TicTacToeBoard:
     """A class used to represent a 3x3 TicTactoe board
 
@@ -180,14 +179,14 @@ Here is a table outlining info about each player including their win, tie, and l
     if user_difficulty == "Easy Mode":
         print("There are two players who I recommend you challenge to a game.\n")
         print(
-            f"Firstly there is the {df.at[0,'personality']} {Fore.CYAN}{df.at[0,'player_name']}{Fore.WHITE}. "
+            f"Firstly there is the {df.at[0,'personality']} {Fore.CYAN}{df.at[0,'player_name']}{Fore.WHITE}. \n"
             f"He has won {df.at[0,'wins']} games out of {df.at[0,'total_games']} and"
             " has still not discovered a reliable strategy to win.\n"
             )
         print(
-            f"Secondly there is {Fore.CYAN}{df.at[1,'player_name']}{Fore.WHITE}. "
+            f"Secondly there is {Fore.CYAN}{df.at[1,'player_name']}{Fore.WHITE}. \n"
             f"She is {df.at[0,'personality']} but is too busy eating "
-            "eucalyptus leaves to focus long enough to consistently win. "
+            "eucalyptus leaves to focus long enough to consistently win. \n"
             f"She has won {df.at[0,'wins']} games out of {df.at[0,'total_games']}.\n"
             )
         print(Fore.CYAN +
@@ -306,7 +305,7 @@ Here is a table outlining info about each player including their win, tie, and l
 ⣾⣿⣿⣿⠿⣿⣿⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⡿⠛⠉⠀⠀⠀⠈⠙⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"""
         )
-    print(pyfiglet.figlet_format(Fore.CYAN + "Danni the Doplphin", font="digital"))
+    print(Fore.CYAN + pyfiglet.figlet_format("Danni the Doplphin", font="digital"))
     return danni_dolphin
 
 def select_starting_player(user_player, computer_player):
@@ -570,7 +569,7 @@ if __name__ == "__main__":
         standard_board.reset_board()  # Resets the board to commence a new game
         opponent = select_opponent()  # User selects difficulty level and choses an
         print(
-            f"You have selected {opponent.name}as your opponent today.  Good choice."
+            f"You have selected {opponent.name} as your opponent today.  Good choice."
         )
         play(standard_board, user_player_1, opponent)
         play_again = input(Fore.CYAN +
