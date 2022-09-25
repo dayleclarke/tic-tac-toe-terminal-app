@@ -62,6 +62,10 @@ class Player:
 
 class UserPlayer(Player):
     """A class used to represent the user/human player."""
+    def __init__(self, letter, name, username):
+        super().__init__(letter, name)
+        self.username = username
+
     def get_move(self, game):
         """The player inputs a position to place their letter which is
             returned by the method.

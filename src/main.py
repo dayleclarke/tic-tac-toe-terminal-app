@@ -162,8 +162,9 @@ Here is a table outlining info about each player including their win, tie, and l
         )
     time.sleep(0.8)
     df = pd.read_csv("player_scores.csv")
+    df_computer_players = df.head(4)
     pd.options.display.float_format = "{:.2%}".format
-    print(df,"\n")
+    print(df_computer_players,"\n")
     print(
         "To help select the correct player for you, what difficulty level would you like"
         " to play on? \nMenu entries can be selected with the arrow or j/k keys.\n"
@@ -509,7 +510,7 @@ if __name__ == "__main__":
     print("Welcome to ...\n")
     print(pyfiglet.figlet_format("Tic Tac Toe"))
     print("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n")
-    
+
     print("How would you like to begin today?")
     print("Menu entries can be selected with the arrow or j/k keys.\n")
     while True:
@@ -523,12 +524,18 @@ if __name__ == "__main__":
         log_in_choice = login_options[menu_entry_index]
         print(log_in_choice)
         if log_in_choice == "Register as a new user":
-            register()
-        elif log_in_choice == "Login as an exsiting user":
-            login = login()
-            if login is None:
+            user_details = register()
+            df_scores = pd.read_csv("player_scores.csv")
+            df_scores.loc[len(df_scores)]= [user_details["username"],None, None,0, 0, 0, 0, 0]
+            df_scores.to_csv("player_scores.csv", index=False)
+            break
+        if log_in_choice == "Login as an exsiting user":
+            user_details = login()
+            if user_details is None:
                 continue
-                
+            break
+        user_details = {"username": "Guest", "password": None}
+        break
 
     while True:
         player_name = input("What is your first name?: ")
@@ -549,7 +556,8 @@ if __name__ == "__main__":
         break
     print("Thank you for confirming that for me. I would hate to call you by the wrong name.")
     time.sleep(0.8)
-    user_player_1 = UserPlayer("X", player_name)
+    user_player_1 = UserPlayer("X", player_name, user_details["username"])
+    print(user_player_1.username)
 
     while True:
         standard_board.reset_board()  # Resets the board to commence a new game

@@ -25,7 +25,7 @@ class PasswordLengthError(Exception):
 
 class PasswordCaseError(Exception):
     """An error raised when a password does not contain at least one
-    capital letter.
+    upper and one lower case character.
     """
     def __init__(self):
         super().__init__(
@@ -53,7 +53,14 @@ class ConfirmationError(Exception):
         super().__init__("The passwords entered do not match. Please try again.")
 
 class InvalidUserError(Exception):
-    """An error raised when the provided username does not exsist in the user_credentials dataframe.
+    """An error raised when the provided username does not exist in the user_credentials dataframe.
     """
     def __init__(self, username):
-        super().__init__(f"{username} is not a valid username. Please try again.")
+        super().__init__(f"{username} is not an existing username. Please try again.")
+
+class IncorrectPasswordError(Exception):
+    """An error raised when the password the user entered doesn't match
+    the data stored in user_credentials.csv.
+    """
+    def __init__(self):
+        super().__init__("Incorrect password. Please try again.")
