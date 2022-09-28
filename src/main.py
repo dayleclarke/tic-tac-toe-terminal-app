@@ -24,6 +24,12 @@ class TicTacToeBoard:
         self.board = [" " for i in range(9)]
         # Keeps track of the winner which starts out as None.
         self.current_winner = None
+   
+    def __repr__(self):
+        return "An instance of the TicTacToe class."
+
+    def __str__(self):
+        return "This refers to the 3x3 TicTacToe board."
 
     @staticmethod
     def board_number_indices():
