@@ -59,6 +59,13 @@ class Player:
         df.to_csv("player_scores.csv", index=False)
         return df
 
+    def __repr__(self):
+        return f"An instance of the Player class with the name {self.name}."
+
+    def __str__(self):
+        return f"A player named: {self.name}."
+
+
 
 class UserPlayer(Player):
     """A class used to represent the user/human player."""
