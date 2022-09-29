@@ -185,6 +185,9 @@ Here is a table outlining info about each player including their win, tie, and l
         print(Fore.CYAN + pyfiglet.figlet_format("Danni the Doplphin", font="digital"))
         danni_dolphin = ExpertComputerPlayer("O", "Danni the Dolphin")
         opponent_player = danni_dolphin
+    print(
+        f"You have selected {opponent.name} as your opponent today.  Good choice."
+        )
     return opponent_player
 
 def select_starting_player(user_player, computer_player):
@@ -392,7 +395,6 @@ def play(game, x_player, o_player):
 if __name__ == "__main__":
     clearing.clear()
     init(autoreset=True)
-
     standard_board = TicTacToeBoard()
     print("Welcome to ...\n")
     print(Fore.CYAN + pyfiglet.figlet_format("Tic Tac Toe"))
@@ -402,16 +404,11 @@ if __name__ == "__main__":
     print("Menu entries can be selected with the arrow or j/k keys.\n")
     user_details = login()
     player_name = name_confirmation()
-
-   
     user_player_1 = UserPlayer("X", player_name, user_details["username"])
 
     while True:
         standard_board.reset_board()  # Resets the board to commence a new game
         opponent = select_opponent()  # User selects difficulty level and choses an
-        print(
-            f"You have selected {opponent.name} as your opponent today.  Good choice."
-        )
         play(standard_board, user_player_1, opponent)
         play_again = input(Fore.CYAN +
             "Thanks for playing today. Would you like to play again? (yes/no): "

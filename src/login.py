@@ -33,7 +33,7 @@ def create_password():
 
     return password
 
-    
+
 def register():
     """A function used to register a new user in the system.
 

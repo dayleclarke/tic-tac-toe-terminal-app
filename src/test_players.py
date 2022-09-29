@@ -41,29 +41,29 @@ class TestGetMoveUser:
         Args:
             monkeypatch: an object imported from within pytest.
         """
-        fake_input(monkeypatch,[0, 5, 8])
+        fake_input(monkeypatch,[1, 5, 9])
         assert user_player_1.get_move(standard_board) == 0
-        assert user_player_1.get_move(standard_board) == 5
+        assert user_player_1.get_move(standard_board) == 4
         assert user_player_1.get_move(standard_board) == 8
 
     def test_above_range(self, monkeypatch):
-        """Test the method raises a RangeError when given input < 0.
+        """Test the method raises a RangeError when given input < 1.
 
         Args:
             monkeypatch: an object imported from within pytest.
         """
-        fake_input(monkeypatch,[-1, -20, -50])
+        fake_input(monkeypatch,[0, -1, -20])
         for i in range(3):
             with pytest.raises(RangeError):
                 user_player_1.get_move(standard_board)
 
     def test_below_range(self, monkeypatch):
-        """Test the method raises a RangeError when given input > 8.
+        """Test the method raises a RangeError when given input > 9.
 
         Args:
             monkeypatch: an object imported from within pytest.
         """
-        fake_input(monkeypatch,[9, 20, 50])
+        fake_input(monkeypatch,[10, 20, 50])
         for i in range(3):
             with pytest.raises(RangeError):
                 user_player_1.get_move(standard_board)
@@ -93,7 +93,7 @@ class TestGetMoveUser:
             monkeypatch: an object imported from within pytest.
         """
         standard_board.board = ["O", " ", "X", " ", "X", " ", "X", " ", "O"]
-        fake_input(monkeypatch,[0, 2, 4])
+        fake_input(monkeypatch,[1, 3, 5])
         with pytest.raises(OccupiedError):
             user_player_1.get_move(standard_board)
 
