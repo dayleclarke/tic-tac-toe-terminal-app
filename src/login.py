@@ -1,4 +1,6 @@
 import pandas as pd
+from colorama import Fore
+from simple_term_menu import TerminalMenu
 from custom_exceptions import PasswordLengthError, PasswordCaseError, PasswordTypeError, ConfirmationError
 from custom_exceptions import InvalidUserError, IncorrectPasswordError
 
@@ -132,7 +134,7 @@ def match_password(username):
         raise IncorrectPasswordError()
     return user_password
 
-def login():
+def returning_login():
     """A function used to log an exsisting user into the system.
 
     Exceptions: InvalidUserError: when the provided username does not exsist in
@@ -166,3 +168,50 @@ def login():
         return None   
     print(f"Registration successfull! Welcome back to Animal TicTacToe {username}!\n")
     return {"username": username, "password": password}
+
+def login():
+    while True:
+        login_options = [
+                        "Register as a new user",
+                        "Login as an exsiting user",
+                        "Play as a guest (no log-in required)",
+                        ]
+        terminal_login_menu = TerminalMenu(login_options)
+        menu_entry_index = terminal_login_menu.show()
+        log_in_choice = login_options[menu_entry_index]
+        print(log_in_choice)
+        if log_in_choice == "Register as a new user":
+            user_details = register()
+            df_scores = pd.read_csv("player_scores.csv")
+            df_scores.loc[len(df_scores)]= [user_details["username"],None, None,0, 0, 0, 0, 0]
+            df_scores.to_csv("player_scores.csv", index=False)
+            break
+        if log_in_choice == "Login as an exsiting user":
+            user_details = returning_login()
+            if user_details is None:
+                continue
+            break
+        user_details = {"username": "Guest", "password": None}
+        break
+    return user_details
+
+def name_confirmation():
+    while True:
+        player_name = input(Fore.CYAN + "What is your first name?: ")
+        print(Fore.WHITE +
+            "Hello "
+            + player_name.title()
+            + "! So lovely to meet you. That's a great name. "
+            "Can you please confirm I have your name spelt correctly? \n"
+            "Menu entries can be selected with the arrow or j/k keys.\n"
+            )
+        user_options = [f"Yes, my name is {player_name.title()}",
+                        "No, I wish to enter my name again."]
+        terminal_menu = TerminalMenu(user_options)
+        menu_entry_index = terminal_menu.show()
+        name_check = user_options[menu_entry_index]
+        if name_check == "No, I wish to enter my name again.":
+            continue
+        break
+    print("Thank you for confirming that for me. I would hate to call you by the wrong name.")
+    return player_name

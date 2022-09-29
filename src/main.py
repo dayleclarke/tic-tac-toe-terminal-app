@@ -7,170 +7,18 @@ import clearing
 from colorama import init, deinit, Fore
 from players import UserPlayer, EasyComputerPlayer, ExpertComputerPlayer
 from custom_exceptions import RangeError, OccupiedError
-from login import register,login
+from login import login, name_confirmation
+from board import TicTacToeBoard
 
 # Create constants with ASCII text in a seperate file. Make it a publically accessable class.  Make constants and push it into another file.
 
 # Take out section of main and put them into separate functions or classes.
-# Move board class into seperate module.
 # Move errors where they are raised.
-# Shorten comments to make more concise.
 # Comments are about what yoiu are trying to achieve. What is the code ment to do
 # Add comments to sections without comments.
-# Subtract 1 from the user's input.
 # Clear screen each time.
 
 
-class TicTacToeBoard:
-    """A class used to represent a 3x3 TicTactoe board
-
-    Attributes:
-        board(list): A list to represent the 9 positions of the board.
-        current_winner (bool or str): False if there is no current
-            winner or the letter belonging to the current winner if
-            there is one.
-    """
-    def __init__(self):
-        # Creates a "board" which is a list containing 9 " " strings
-        self.board = [" " for i in range(9)]
-        # Keeps track of the winner which starts out as None.
-        self.current_winner = None
-
-    def __repr__(self):
-        return f"""An instance of the TicTacToe class.
-
-The board currently has the following markers placed: {self.board}. 
-
-The winner is currently set to {self.current_winner}.
-"""
-
-    def __str__(self):
-        return "This refers to the 3x3 TicTacToe board."
-
-    @staticmethod
-    def board_number_indices():
-        """Visualisation of board with number indices.
-
-        A visualisation printed to the terminal showing the 3x3 board
-        which shows which number each position corresponds to.
-        """
-        # number_board = [[str(i) for i in range(j * 3, (j + 1) * 3)] for j in range(3)]
-        number_board = [[str(i + 1) for i in range(j * 3, (j + 1) * 3)] for j in range(3)]
-        print("-------------")
-        for row in number_board:
-            print("| " + " | ".join(row) + " |")
-        print("-------------\n")
-
-    def print_board(self):
-        """Visualisation of the 3X3 board showing where letters have
-        been placed and where free spaces remain.
-        """
-        print("-------------")
-        for row in [self.board[i * 3 : (i + 1) * 3] for i in range(3)]:
-            print("| " + " | ".join(row) + " |")
-        print("-------------")
-
-    def free_positions(self):
-        """List comprehension which returns all the number indices of
-        all free spots available on the board.
-
-        Returns:
-            list: the number indices of all " " positions on the board.
-        """
-        return [i for i, position in enumerate(self.board) if position == " "]
-
-    def empty_squares(self):
-        """This method returns True if empty spaces remain on the
-        board. It will return False otherwise.
-
-        Returns:
-            bool: True if a " " string item remains in the board. False
-                otherwise.
-        """
-        return " " in self.board
-
-    def num_empty_squares(self):
-        """This method returns the number of empty spaces remaining on
-        the board.
-
-        Returns:
-            int: The number of " " string items remaining on the board.
-        """
-        return self.board.count(" ")
-
-    def make_move(self, position, letter):
-        """A method to place a player's letter onto the board.
-
-        Args:
-            position (int): the position (between 0-8) on the board to
-            place the letter.
-            letter (str): "X" or "O" depending on whose turn it is.
-        """
-        if self.board[position] == " ":
-            self.board[position] = letter
-            if self.winner(position, letter):
-                self.current_winner = letter
-
-
-    def winner(self, position, letter):
-        """A method that checks to see if the last move made
-        created a winner.
-
-        It will analyse the current state of the board at the provided
-        position to see if the last player's letter appears 3 times in
-        a row either horizontally, vertically or diagonally.
-
-        Limitations: Must be called after the player has made their move.
-        It accesses the win state based on the position provided.
-        But both diagonals of the board are checked. Returns True if
-        there is a winner but doesn't return or print which player is
-        the winner.
-
-        Args:
-            position (int): the position (between 0-8) on the board
-                that was last played.
-            letter (str): "X" or "O" depending on which player last
-                made a move.
-
-        Returns:
-            bool: True if there is a current winner, False otherwise.
-        """
-        # Analysing the row at the position last played
-        # The number of times the position index is divisable by 3
-        # indicates it's row index (either 0, 1 or 2).
-        row_index = (position // 3)
-        # This selects the entire row that the position is in.
-        row = self.board[row_index * 3 : (row_index + 1) * 3]
-        # If the letter is in all of the squares on this row
-        # then there is a winner.
-        if all(square == letter for square in row):
-            return True
-        # Analysing the column at the position last played
-        # Position modulus 3 will indicate its column index
-        # (either 0, 1 or 2).
-        col_index = (position % 3)
-          # This selects the entire column that the position is in.
-        column = [self.board[col_index + i * 3] for i in range(3)]
-        if all(square == letter for square in column):
-            return True
-        # Analysing both diagonal positions (0, 4, 8) and (2, 4, 6).
-        diagonal1 = [self.board[i] for i in [0, 4, 8]]
-        if all(square == letter for square in diagonal1):
-            return True
-        diagonal2 = [self.board[i] for i in [2, 4, 6]]
-        if all(square == letter for square in diagonal2):
-            return True
-        # If all checks fail there is no winner return False
-        return False
-
-    def reset_board(self):
-        """Resets the board to all blank squares with no winner.
-
-        Replaces the "board" to the original list of " " strings.
-        Returns the current winner to None.
-        """
-        self.board = [" " for i in range(9)]
-        self.current_winner = None
 
 
 def select_opponent():
@@ -457,11 +305,10 @@ def play(game, x_player, o_player):
     """A function used to play one complete game of TicTacToe.
 
     This function calls the select_starting_player() function to
-    determine which player will start the game. While there are free
-    positions left on the board players will alternate turns (by
-    invoking the make_move() method of each player) and placing
+    determine which player will go first. While there are free
+    positions on the board players will alternate turns and placing
     their marker in one of the 9 positions on the board. The game will
-    continue in this way until a player places 3 markers in a row
+    continue until a player places 3 markers in a row
     horizontally, vertically or diagonally or the board fills up.
     The win status is checked in the make_method() after each player
     places their marker. Instructions are printed to the terminal to
@@ -477,11 +324,14 @@ def play(game, x_player, o_player):
         o_player: an instance of the Player class.
             based on the opponent previously selected by the user.
     """
+    # Envoke function to determine which player will go first based on
+    # a scissors-paper-rock game.
     turn = select_starting_player(user_player_1.name, opponent.name)
     print("Our game will be played on a 3 by 3 board using the following positions.\n")
+    # Prints a board showing which number corrisponds to each position.
     standard_board.board_number_indices()
     print("Commencing game....")
-    while game.free_positions():
+    while game.free_positions(): # while there are positions remaining.
         if turn == x_player.name:
             while True:
                 try:
@@ -542,7 +392,7 @@ def play(game, x_player, o_player):
 if __name__ == "__main__":
     clearing.clear()
     init(autoreset=True)
-    
+
     standard_board = TicTacToeBoard()
     print("Welcome to ...\n")
     print(Fore.CYAN + pyfiglet.figlet_format("Tic Tac Toe"))
@@ -550,49 +400,10 @@ if __name__ == "__main__":
 
     print(Fore.CYAN + "How would you like to begin today?\n")
     print("Menu entries can be selected with the arrow or j/k keys.\n")
-    while True:
-        login_options = [
-                        "Register as a new user",
-                        "Login as an exsiting user",
-                        "Play as a guest (no log-in required)",
-                        ]
-        terminal_login_menu = TerminalMenu(login_options)
-        menu_entry_index = terminal_login_menu.show()
-        log_in_choice = login_options[menu_entry_index]
-        print(log_in_choice)
-        if log_in_choice == "Register as a new user":
-            user_details = register()
-            df_scores = pd.read_csv("player_scores.csv")
-            df_scores.loc[len(df_scores)]= [user_details["username"],None, None,0, 0, 0, 0, 0]
-            df_scores.to_csv("player_scores.csv", index=False)
-            break
-        if log_in_choice == "Login as an exsiting user":
-            user_details = login()
-            if user_details is None:
-                continue
-            break
-        user_details = {"username": "Guest", "password": None}
-        break
+    user_details = login()
+    player_name = name_confirmation()
 
-    while True:
-        player_name = input(Fore.CYAN + "What is your first name?: ")
-        print(Fore.WHITE +
-            "Hello "
-            + player_name.title()
-            + "! So lovely to meet you. That's a great name. "
-            "Can you please confirm I have your name spelt correctly? \n"
-            "Menu entries can be selected with the arrow or j/k keys.\n"
-            )
-        user_options = [f"Yes, my name is {player_name.title()}",
-                        "No, I wish to enter my name again."]
-        terminal_menu = TerminalMenu(user_options)
-        menu_entry_index = terminal_menu.show()
-        name_confirmation = user_options[menu_entry_index]
-        if name_confirmation == "No, I wish to enter my name again.":
-            continue
-        break
-    print("Thank you for confirming that for me. I would hate to call you by the wrong name.")
-    time.sleep(0.8)
+   
     user_player_1 = UserPlayer("X", player_name, user_details["username"])
 
     while True:
