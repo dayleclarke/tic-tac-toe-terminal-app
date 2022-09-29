@@ -9,6 +9,17 @@ from players import UserPlayer, EasyComputerPlayer, ExpertComputerPlayer
 from custom_exceptions import RangeError, OccupiedError
 from login import register,login
 
+# Create constants with ASCII text in a seperate file. Make it a publically accessable class.  Make constants and push it into another file.
+
+# Take out section of main and put them into separate functions or classes.
+# Move board class into seperate module.
+# Move errors where they are raised.
+# Shorten comments to make more concise.
+# Comments are about what yoiu are trying to achieve. What is the code ment to do
+# Add comments to sections without comments.
+# Subtract 1 from the user's input.
+# Clear screen each time.
+
 
 class TicTacToeBoard:
     """A class used to represent a 3x3 TicTactoe board
@@ -24,9 +35,14 @@ class TicTacToeBoard:
         self.board = [" " for i in range(9)]
         # Keeps track of the winner which starts out as None.
         self.current_winner = None
-   
+
     def __repr__(self):
-        return "An instance of the TicTacToe class."
+        return f"""An instance of the TicTacToe class.
+
+The board currently has the following markers placed: {self.board}. 
+
+The winner is currently set to {self.current_winner}.
+"""
 
     def __str__(self):
         return "This refers to the 3x3 TicTacToe board."
@@ -38,7 +54,8 @@ class TicTacToeBoard:
         A visualisation printed to the terminal showing the 3x3 board
         which shows which number each position corresponds to.
         """
-        number_board = [[str(i) for i in range(j * 3, (j + 1) * 3)] for j in range(3)]
+        # number_board = [[str(i) for i in range(j * 3, (j + 1) * 3)] for j in range(3)]
+        number_board = [[str(i + 1) for i in range(j * 3, (j + 1) * 3)] for j in range(3)]
         print("-------------")
         for row in number_board:
             print("| " + " | ".join(row) + " |")
@@ -185,7 +202,8 @@ Here is a table outlining info about each player including their win, tie, and l
     if user_difficulty == "Easy Mode":
         print("There are two players who I recommend you challenge to a game.\n")
         print(
-            f"Firstly there is the {df.at[0,'personality']} {Fore.CYAN}{df.at[0,'player_name']}{Fore.WHITE}. \n"
+            f"Firstly there is the {df.at[0,'personality']}"
+            f"{Fore.CYAN}{df.at[0,'player_name']}{Fore.WHITE}. \n"
             f"He has won {df.at[0,'wins']} games out of {df.at[0,'total_games']} and"
             " has still not discovered a reliable strategy to win.\n"
             )
@@ -202,7 +220,8 @@ Here is a table outlining info about each player including their win, tie, and l
     elif user_difficulty == "Expert Mode":
         print("There are two players I recommend you challenge to a game.\n")
         print(
-            f"Firstly there is the {df.at[2,'personality']} {Fore.CYAN}{df.at[2,'player_name']}{Fore.WHITE}. "
+            f"Firstly there is the {df.at[2,'personality']}{Fore.CYAN}"
+            f"{df.at[2,'player_name']}{Fore.WHITE}. "
             "He is currently undefeated having never lost a game. He has won "
             f"{df.at[0,'wins']} games out of {df.at[0,'total_games']}."
             )
@@ -227,10 +246,10 @@ Here is a table outlining info about each player including their win, tie, and l
             opponent_options, title = "Which character would you like to play with today?:"
             )
     opponent_entry_index = opponent_terminal_menu.show()
-    opponent_player = opponent_options[opponent_entry_index]
-    opponent_player = opponent_player.split()[0]
+    opponent_name = opponent_options[opponent_entry_index]
+    opponent_name = opponent_name.split()[0]
 
-    if opponent_player == "Pete":
+    if opponent_name == "Pete":
         print(
             """⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⣰⣿⣿⣿⣿⣦⣀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -251,8 +270,9 @@ Here is a table outlining info about each player including their win, tie, and l
 ⠀⠀⠀⠀⠀⠈⠉⠉⠀⠀⠀⠀⠀⠀⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀"""
         )
         print(Fore.CYAN + pyfiglet.figlet_format("Pete the Panda", font="digital"))
-        return pete_panda
-    if opponent_player == "Katie":
+        pete_panda = EasyComputerPlayer("O", "Pete the Panda")
+        opponent_player = pete_panda
+    elif opponent_name == "Katie":
         print(
             """
 ⢀⠔⠊⠉⠑⢄⠀⠀⣀⣀⠤⠤⠤⢀⣀⠀⠀⣀⠔⠋⠉⠒⡄⠀
@@ -272,8 +292,9 @@ Here is a table outlining info about each player including their win, tie, and l
 """
         )
         print(Fore.CYAN + pyfiglet.figlet_format("Katie the Koala", font="digital"))
-        return katie_koala
-    if opponent_player == "Ollie":
+        katie_koala = EasyComputerPlayer("O", "Katie the Koala")
+        opponent_player = katie_koala
+    elif opponent_name == "Ollie":
         print("""
                         ___
                      .-'   `'.
@@ -296,23 +317,27 @@ Here is a table outlining info about each player including their win, tie, and l
         """
         )
         print(Fore.CYAN + pyfiglet.figlet_format("Ollie the Octopus", font="digital"))
-        return ollie_octopus
-    print(
-            """
-⠀⠀⠀⠐⢿⣿⣿⣿⣿⣿⣶⣤⣤⣤⣤⣤⣀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠙⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⡀⠀⠀⠀⠀
-⠀⠀⠀⠀⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⠀⠀⠀
-⠀⠀⠀⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⠀
-⠀⠀⢰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⠿⠿⠿⠿⠿⠟⠃
-⠀⠀⢸⣿⣿⣿⣿⡿⠛⠉⠁⠀⢸⣿⠿⠁⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⢸⣿⣿⡿⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⢸⣿⣿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⢀⣾⣿⣿⣿⣷⣦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⣾⣿⣿⣿⠿⣿⣿⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⡿⠛⠉⠀⠀⠀⠈⠙⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"""
-        )
-    print(Fore.CYAN + pyfiglet.figlet_format("Danni the Doplphin", font="digital"))
-    return danni_dolphin
+        ollie_octopus = ExpertComputerPlayer("O", "Ollie the Octopus")
+        opponent_player = ollie_octopus
+    else:
+        print(
+                """
+    ⠀⠀⠀⠐⢿⣿⣿⣿⣿⣿⣶⣤⣤⣤⣤⣤⣀⠀⠀⠀⠀⠀⠀⠀
+    ⠀⠀⠀⠀⠀⠙⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⡀⠀⠀⠀⠀
+    ⠀⠀⠀⠀⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⠀⠀⠀
+    ⠀⠀⠀⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⠀
+    ⠀⠀⢰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⠿⠿⠿⠿⠿⠟⠃
+    ⠀⠀⢸⣿⣿⣿⣿⡿⠛⠉⠁⠀⢸⣿⠿⠁⠀⠀⠀⠀⠀⠀⠀⠀
+    ⠀⠀⢸⣿⣿⡿⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+    ⠀⠀⢸⣿⣿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+    ⢀⣾⣿⣿⣿⣷⣦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+    ⣾⣿⣿⣿⠿⣿⣿⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+    ⡿⠛⠉⠀⠀⠀⠈⠙⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"""
+            )
+        print(Fore.CYAN + pyfiglet.figlet_format("Danni the Doplphin", font="digital"))
+        danni_dolphin = ExpertComputerPlayer("O", "Danni the Dolphin")
+        opponent_player = danni_dolphin
+    return opponent_player
 
 def select_starting_player(user_player, computer_player):
     """Returns the starting player
@@ -355,7 +380,8 @@ def select_starting_player(user_player, computer_player):
 ---.__(___)
 """,
 }
-    print(Fore.CYAN + "We will begin by playing scissors-paper-rock to determine which player will start.")
+    print(Fore.CYAN + "We will begin by playing scissors-paper-rock to"
+    "determine which player will start.")
     while True:
         print("Menu entries can be selected with the arrow or j/k keys.")
         gesture_options = list(hand_gestures.keys())
@@ -387,43 +413,44 @@ def select_starting_player(user_player, computer_player):
                 f"{computer_player}'s scissors cuts {user_player}'s paper. "
                 f"{computer_player} wins and will go first!"
                 )
-            return computer_player
+            starting_player = computer_player
         print(Fore.CYAN + pyfiglet.figlet_format("You Win!"))
         print(
             f"{user_player}'s paper covers {computer_player}'s scissors. "
             f"{user_player} wins and will go first!"
             )
-        return user_player
+        starting_player = user_player
 
-    if user_choice == "scissors":
+    elif user_choice == "scissors":
         if opponent_choice == "paper":
             print(Fore.CYAN + pyfiglet.figlet_format("You Win!"))
             print(
                 f"{user_player}'s scissors cuts {computer_player}'s paper. "
                 f"{user_player} wins and will go first!"
                 )
-            return user_player
+            starting_player = user_player
         print(Fore.CYAN + pyfiglet.figlet_format("Defeat!"))
         print(
             f"{computer_player}'s rock crushes {user_player}'s scissors. "
             f"{computer_player} wins and will go first!"
             )
-        return computer_player
+        starting_player = computer_player
 
-    if user_choice == "rock":
+    elif user_choice == "rock":
         if opponent_choice == "paper":
             print(Fore.CYAN + pyfiglet.figlet_format("Defeat!"))
             print(
                 f"{computer_player}'s paper covers {user_player}'s rock. "
                 f"{computer_player} wins and will go first!"
                 )
-            return computer_player
+            starting_player = computer_player
         print(Fore.CYAN + pyfiglet.figlet_format("Victory!"))
         print(
             f"{user_player}'s rock crushes {computer_player}'s scissors. "
             f"{user_player} wins and will go first!"
             )
-        return user_player
+        starting_player = user_player
+    return starting_player
 
 
 def play(game, x_player, o_player):
@@ -515,10 +542,7 @@ def play(game, x_player, o_player):
 if __name__ == "__main__":
     clearing.clear()
     init(autoreset=True)
-    pete_panda = EasyComputerPlayer("O", "Pete the Panda")
-    katie_koala = EasyComputerPlayer("O", "Katie the Koala")
-    ollie_octopus = ExpertComputerPlayer("O", "Ollie the Octopus")
-    danni_dolphin = ExpertComputerPlayer("O", "Danni the Dolphin")
+    
     standard_board = TicTacToeBoard()
     print("Welcome to ...\n")
     print(Fore.CYAN + pyfiglet.figlet_format("Tic Tac Toe"))

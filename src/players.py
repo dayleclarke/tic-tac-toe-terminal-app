@@ -110,14 +110,14 @@ class UserPlayer(Player):
 
         Raises:
             RangeError: if the user selects a position outside the
-                range of 0-8.
+                range of 1-9.
             OccupiedError: if the user selects a position that is already occupied.
 
         Returns:
-            int: the position (between 0-8) the player has chosen to move to.
+            int: the position (between 1-9) the player has chosen to move to.
         """
-        val = int(input("Based on the board shown above,"
-                  " enter an integer (0-8) to indicate where you would like to go: "))
+        val = (int(input("Based on the board shown above,"
+                  " enter an integer (1-9) to indicate where you would like to go: ")))- 1
         if val not in range(0, 9):
             raise RangeError(val)
         if val not in game.free_positions():
