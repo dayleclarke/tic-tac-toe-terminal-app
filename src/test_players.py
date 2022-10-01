@@ -149,5 +149,3 @@ class TestGetMoveExpertComp:
         # With an "X" in position 0 and 4 the player needs to block their
         # opponent's win by placing their marker at position 8.
         assert ollie_octopus.get_move(standard_board) == 8
-    
-

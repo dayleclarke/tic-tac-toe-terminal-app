@@ -9,17 +9,21 @@ from players import UserPlayer, EasyComputerPlayer, ExpertComputerPlayer
 from custom_exceptions import RangeError, OccupiedError
 from login import login, name_confirmation
 from board import TicTacToeBoard
-from ASCIItext import panda_ascii, koala_ascii, octopus_ascii, dolphin_ascii, fireworks_ascii, hand_gestures
-
-# Create constants with ASCII text in a seperate file. Make it a publically accessable class.  Make constants and push it into another file.
-
-# Take out section of main and put them into separate functions or classes.
-# Move errors where they are raised.
-# Comments are about what yoiu are trying to achieve. What is the code ment to do
-# Add comments to sections without comments.
-# Clear screen each time.
+from asciiart import PANDA_IMG, KOALA_IMG, OCTOPUS_IMG, DOLPHIN_IMG, FIREWORKS_IMG, HAND_GESTURES
 
 
+def select_difficulty():
+    """Collects user input and returns the diffiuclty level they wish to play on"""
+    print(Fore.CYAN +
+        "To help select the correct player for you, what difficulty level would you like"
+        " to play on?")
+    print("Menu entries can be selected with the arrow or j/k keys.\n")
+    difficulty_options = ["Easy Mode", "Expert Mode"]
+    difficulty_terminal_menu = TerminalMenu(difficulty_options, title="Game difficulty level:")
+    difficulty_entry_index = difficulty_terminal_menu.show()
+    user_difficulty = difficulty_options[difficulty_entry_index]
+    print(f"You have chosen to play on {Fore.CYAN}{user_difficulty}.")
+    return user_difficulty
 
 
 def select_opponent():
@@ -37,16 +41,7 @@ Here is a table outlining info about each player including their win, tie, and l
     df_computer_players = df.head(4)
     pd.options.display.float_format = "{:.2%}".format
     print(df_computer_players.to_string(index=False),"\n")
-    print(Fore.CYAN +
-        "To help select the correct player for you, what difficulty level would you like"
-        " to play on?")
-    print("Menu entries can be selected with the arrow or j/k keys.\n")
-    difficulty_options = ["Easy Mode", "Expert Mode"]
-    difficulty_terminal_menu = TerminalMenu(difficulty_options, title="Game difficulty level:")
-    difficulty_entry_index = difficulty_terminal_menu.show()
-    user_difficulty = difficulty_options[difficulty_entry_index]
-    print(f"You have chosen to play on {Fore.CYAN}{user_difficulty}.")
-    time.sleep(0.8)
+    user_difficulty = select_difficulty()
 
     if user_difficulty == "Easy Mode":
         print("There are two players who I recommend you challenge to a game.\n")
@@ -99,22 +94,22 @@ Here is a table outlining info about each player including their win, tie, and l
     opponent_name = opponent_name.split()[0]
 
     if opponent_name == "Pete":
-        print(panda_ascii)
+        print(PANDA_IMG)
         print(Fore.CYAN + pyfiglet.figlet_format("Pete the Panda", font="digital"))
         pete_panda = EasyComputerPlayer("O", "Pete the Panda")
         opponent_player = pete_panda
     elif opponent_name == "Katie":
-        print(koala_ascii)
+        print(KOALA_IMG)
         print(Fore.CYAN + pyfiglet.figlet_format("Katie the Koala", font="digital"))
         katie_koala = EasyComputerPlayer("O", "Katie the Koala")
         opponent_player = katie_koala
     elif opponent_name == "Ollie":
-        print(octopus_ascii)
+        print(OCTOPUS_IMG)
         print(Fore.CYAN + pyfiglet.figlet_format("Ollie the Octopus", font="digital"))
         ollie_octopus = ExpertComputerPlayer("O", "Ollie the Octopus")
         opponent_player = ollie_octopus
     else:
-        print(dolphin_ascii)
+        print(DOLPHIN_IMG)
         print(Fore.CYAN + pyfiglet.figlet_format("Danni the Doplphin", font="digital"))
         danni_dolphin = ExpertComputerPlayer("O", "Danni the Dolphin")
         opponent_player = danni_dolphin
@@ -123,11 +118,10 @@ Here is a table outlining info about each player including their win, tie, and l
         )
     return opponent_player
 
-def select_starting_player(user_player, computer_player):
-    """Returns the starting player
 
-    A function used to determine the starting player based on the
-    outcome of a scissors-paper-rock game.
+def select_starting_player(user_player, computer_player):
+    """Returns the starting player based on the outcome of a
+    scissors-paper-rock game.
 
     Args:
         user_player: an instance of the HumanPlayer class.
@@ -142,18 +136,18 @@ def select_starting_player(user_player, computer_player):
     "determine which player will start.")
     while True:
         print("Menu entries can be selected with the arrow or j/k keys.")
-        gesture_options = list(hand_gestures.keys())
+        gesture_options = list(HAND_GESTURES.keys())
         gesture_terminal_menu = TerminalMenu(
             gesture_options,
             title="Please select one of the following hand gestures:")
         gesture_entry_index = gesture_terminal_menu.show()
         user_choice = gesture_options[gesture_entry_index]
-        print(Fore.CYAN + hand_gestures[user_choice])
+        print(Fore.CYAN + HAND_GESTURES[user_choice])
         print(f"{user_player} has chosen to play {user_choice}.")
         time.sleep(0.8)
-        opponent_choice = choice(list(hand_gestures.keys()))
+        opponent_choice = choice(list(HAND_GESTURES.keys()))
         time.sleep(0.8)
-        print(Fore.CYAN + hand_gestures[opponent_choice])
+        print(Fore.CYAN + HAND_GESTURES[opponent_choice])
         print(f"{computer_player} has chosen to play {opponent_choice}.")
         time.sleep(0.8)
         if user_choice == opponent_choice:
@@ -242,7 +236,7 @@ def play(game, x_player, o_player):
     standard_board.board_number_indices()
     print("Commencing game....")
     while game.free_positions(): # while there are positions remaining.
-        if turn == x_player.name:
+        if turn == x_player.name: # if it is player x's turn then:
             while True:
                 try:
                     position = x_player.get_move(game)
@@ -252,18 +246,22 @@ def play(game, x_player, o_player):
                 except OccupiedError as err:
                     print(err)
                 except ValueError:
-                    print("That isn't a valid integer. Please enter a number with no decimal places.")
+                    print("That isn't a valid integer."
+                    " Please enter a number with no decimal places.")
             game.make_move(position, "X")
             print(f"{x_player.name} makes a move to position {position}")
-            game.print_board()
-            if game.current_winner:
+            game.print_board() # A copy of the current board is printed.
+            if game.current_winner: # If that move made the X player the winner then:
                 print("Congratulations!!!")
                 print(Fore.CYAN + pyfiglet.figlet_format("You Win!"))
-                print(Fore.CYAN + fireworks_ascii)
+                print(Fore.CYAN + FIREWORKS_IMG)
+                # Update the opponent's scores in the player_scores.csv file.
                 o_player.update_scores("losses")
                 print(Fore.CYAN + pyfiglet.figlet_format("Top 10 Players", font="digital"))
+                # Update the user player's scores in the player_scores.csv file.
                 print(x_player.update_scores("wins"))
                 break
+            # Swap the player whose turn it currently is to the "O" player.
             turn = o_player.name
             continue
         if turn == o_player.name:
@@ -285,7 +283,6 @@ def play(game, x_player, o_player):
         o_player.update_scores("ties")
         print(pyfiglet.figlet_format("Top 10 Players", font="digital"))
         print(x_player.update_scores("ties"))
-
 
 
 if __name__ == "__main__":
