@@ -42,6 +42,7 @@ The winner is currently set to {self.current_winner}.
         A visualisation printed to the terminal showing the 3x3 board
         which shows which number each position corresponds to.
         """
+        print("Position Keys:")
         number_board = [[str(i + 1) for i in range(j * 3, (j + 1) * 3)] for j in range(3)]
         print("-------------")
         for row in number_board:

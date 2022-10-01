@@ -29,14 +29,14 @@ def select_difficulty():
 def select_opponent():
     """Collects user input and returns the opponent they have selected
     to play against."""
-    print(Fore.WHITE +
+    print(Fore.CYAN +"\nSelect Your Opponent")
+    print(
 """Lots of players are around today who would love to play Tic-Tac-Toe with you.
 They each have different skill levels and experience.
-Here is a table outlining info about each player including their win, tie, and loss history:\n
+Here is a table outlining info about each player including their win, tie, and loss history:
 """
         )
     print(Fore.CYAN + pyfiglet.figlet_format("Opponent Player Information", font="digital"))
-    time.sleep(0.8)
     df = pd.read_csv("player_scores.csv")
     df_computer_players = df.head(4)
     pd.options.display.float_format = "{:.2%}".format
@@ -46,7 +46,7 @@ Here is a table outlining info about each player including their win, tie, and l
     if user_difficulty == "Easy Mode":
         print("There are two players who I recommend you challenge to a game.\n")
         print(
-            f"Firstly there is the {df.at[0,'personality']}"
+            f"Firstly there is the {df.at[0,'personality']} "
             f"{Fore.CYAN}{df.at[0,'player_name']}{Fore.WHITE}. \n"
             f"He has won {df.at[0,'wins']} games out of {df.at[0,'total_games']} and"
             " has still not discovered a reliable strategy to win.\n"
@@ -64,7 +64,7 @@ Here is a table outlining info about each player including their win, tie, and l
     elif user_difficulty == "Expert Mode":
         print("There are two players I recommend you challenge to a game.\n")
         print(
-            f"Firstly there is the {df.at[2,'personality']}{Fore.CYAN}"
+            f"Firstly there is the {df.at[2,'personality']}{Fore.CYAN} "
             f"{df.at[2,'player_name']}{Fore.WHITE}. "
             "He is currently undefeated having never lost a game. He has won "
             f"{df.at[0,'wins']} games out of {df.at[0,'total_games']}."
@@ -132,7 +132,7 @@ def select_starting_player(user_player, computer_player):
         the starting player which will either be the user player or the
             computer player depending on who won scissors-paper-rock.
     """
-    print(Fore.CYAN + "We will begin by playing scissors-paper-rock to"
+    print(Fore.CYAN + "We will begin by playing scissors-paper-rock to "
     "determine which player will start.")
     while True:
         print("Menu entries can be selected with the arrow or j/k keys.")
@@ -166,12 +166,13 @@ def select_starting_player(user_player, computer_player):
                 f"{computer_player} wins and will go first!"
                 )
             starting_player = computer_player
-        print(Fore.CYAN + pyfiglet.figlet_format("You Win!"))
-        print(
-            f"{user_player}'s paper covers {computer_player}'s scissors. "
-            f"{user_player} wins and will go first!"
-            )
-        starting_player = user_player
+        else:
+            print(Fore.CYAN + pyfiglet.figlet_format("You Win!"))
+            print(
+                f"{user_player}'s paper covers {computer_player}'s scissors. "
+                f"{user_player} wins and will go first!"
+                )
+            starting_player = user_player
 
     elif user_choice == "scissors":
         if opponent_choice == "paper":
@@ -181,12 +182,13 @@ def select_starting_player(user_player, computer_player):
                 f"{user_player} wins and will go first!"
                 )
             starting_player = user_player
-        print(Fore.CYAN + pyfiglet.figlet_format("Defeat!"))
-        print(
-            f"{computer_player}'s rock crushes {user_player}'s scissors. "
-            f"{computer_player} wins and will go first!"
-            )
-        starting_player = computer_player
+        else:
+            print(Fore.CYAN + pyfiglet.figlet_format("Defeat!"))
+            print(
+                f"{computer_player}'s rock crushes {user_player}'s scissors. "
+                f"{computer_player} wins and will go first!"
+                )
+            starting_player = computer_player
 
     elif user_choice == "rock":
         if opponent_choice == "paper":
@@ -196,14 +198,19 @@ def select_starting_player(user_player, computer_player):
                 f"{computer_player} wins and will go first!"
                 )
             starting_player = computer_player
-        print(Fore.CYAN + pyfiglet.figlet_format("Victory!"))
-        print(
-            f"{user_player}'s rock crushes {computer_player}'s scissors. "
-            f"{user_player} wins and will go first!"
-            )
-        starting_player = user_player
+        else:
+            print(Fore.CYAN + pyfiglet.figlet_format("Victory!"))
+            print(
+                f"{user_player}'s rock crushes {computer_player}'s scissors. "
+                f"{user_player} wins and will go first!"
+                )
+            starting_player = user_player
     return starting_player
 
+def clear_screen(game):
+    clearing.clear()
+    standard_board.board_number_indices()
+    game.print_board()
 
 def play(game, x_player, o_player):
     """A function used to play one complete game of TicTacToe.
@@ -230,12 +237,14 @@ def play(game, x_player, o_player):
     """
     # Envoke function to determine which player will go first based on
     # a scissors-paper-rock game.
+
     turn = select_starting_player(user_player_1.name, opponent.name)
-    print("Our game will be played on a 3 by 3 board using the following positions.\n")
-    # Prints a board showing which number corrisponds to each position.
+    print("Our game will be played on a 3 by 3 board based on the following positions:\n")
     standard_board.board_number_indices()
-    print("Commencing game....")
-    while game.free_positions(): # while there are positions remaining.
+    input("Press the ENTER key when you are ready to begin.")
+    # Game play will continue while there are free positions remaining
+    while game.free_positions():
+        clear_screen(game)
         if turn == x_player.name: # if it is player x's turn then:
             while True:
                 try:
@@ -249,10 +258,8 @@ def play(game, x_player, o_player):
                     print("That isn't a valid integer."
                     " Please enter a number with no decimal places.")
             game.make_move(position, "X")
-            print(f"{x_player.name} makes a move to position {position}")
-            clearing.clear()
-            game.print_board() # A copy of the current board is printed.
             if game.current_winner: # If that move made the X player the winner then:
+                clear_screen(game)
                 print("Congratulations!!!")
                 print(Fore.CYAN + pyfiglet.figlet_format("You Win!"))
                 print(Fore.CYAN + FIREWORKS_IMG)
@@ -266,13 +273,12 @@ def play(game, x_player, o_player):
             turn = o_player.name
             continue
         if turn == o_player.name:
-            time.sleep(1)
             position = o_player.get_move(game)
-            game.make_move(position, "O")
-            print(f"{o_player.name} makes a move to position {position}")
-            game.print_board()
+            time.sleep(1.5)
+            game.make_move(position, "O")              
             if game.current_winner:
-                print(f"Better luck next time! {o_player.name} won the game this time.")
+                clear_screen(game)
+                print(f"Better luck next time! {o_player.name} won the game.\n")
                 o_player.update_scores("wins")
                 print(Fore.CYAN + pyfiglet.figlet_format("Top 10 Players", font="digital"))
                 print(x_player.update_scores("losses"))
@@ -280,9 +286,10 @@ def play(game, x_player, o_player):
             turn = x_player.name
             continue
     else:
+        clear_screen(game)
         print(Fore.CYAN + "It's a tie!")
         o_player.update_scores("ties")
-        print(pyfiglet.figlet_format("Top 10 Players", font="digital"))
+        print(Fore.CYAN + pyfiglet.figlet_format("Top 10 Players", font="digital"))
         print(x_player.update_scores("ties"))
 
 

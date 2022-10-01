@@ -199,7 +199,7 @@ def name_confirmation():
     while True:
         player_name = input(Fore.CYAN + "What is your first name?: ")
         print(Fore.WHITE +
-            "Hello "
+            "\nHello "
             + player_name.title()
             + "! So lovely to meet you. That's a great name. "
             "Can you please confirm I have your name spelt correctly? \n"
