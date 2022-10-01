@@ -250,6 +250,7 @@ def play(game, x_player, o_player):
                     " Please enter a number with no decimal places.")
             game.make_move(position, "X")
             print(f"{x_player.name} makes a move to position {position}")
+            clearing.clear()
             game.print_board() # A copy of the current board is printed.
             if game.current_winner: # If that move made the X player the winner then:
                 print("Congratulations!!!")
@@ -301,7 +302,7 @@ if __name__ == "__main__":
 
     while True:
         standard_board.reset_board()  # Resets the board to commence a new game
-        opponent = select_opponent()  # User selects difficulty level and choses an
+        opponent = select_opponent()  # User selects difficulty level and choses an opponent
         play(standard_board, user_player_1, opponent)
         play_again = input(Fore.CYAN +
             "Thanks for playing today. Would you like to play again? (yes/no): "

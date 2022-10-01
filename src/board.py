@@ -1,3 +1,5 @@
+"""A module used to store the TicTacToe board class used to represent
+a 3X3 TicTacToe board"""
 class TicTacToeBoard:
     """A class used to represent a 3x3 TicTactoe board
 
@@ -11,7 +13,16 @@ class TicTacToeBoard:
         # Creates a "board" which is a list containing 9 " " strings
         self.board = [" " for i in range(9)]
         # Keeps track of the winner which starts out as None.
-        self.current_winner = None
+        self.__current_winner = None
+
+    @property
+    def current_winner(self):
+        """A method used to get access to the private current winner attribute"""
+        return self.__current_winner
+
+    @current_winner.setter
+    def current_winner(self, current_winner):
+        self.__current_winner = current_winner
 
     def __repr__(self):
         return f"""An instance of the TicTacToe class.
@@ -31,7 +42,6 @@ The winner is currently set to {self.current_winner}.
         A visualisation printed to the terminal showing the 3x3 board
         which shows which number each position corresponds to.
         """
-        # number_board = [[str(i) for i in range(j * 3, (j + 1) * 3)] for j in range(3)]
         number_board = [[str(i + 1) for i in range(j * 3, (j + 1) * 3)] for j in range(3)]
         print("-------------")
         for row in number_board:

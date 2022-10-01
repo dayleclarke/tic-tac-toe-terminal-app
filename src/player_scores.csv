@@ -1,10 +1,10 @@
 player_name,level,personality,wins,ties,losses,total_games,percentage_loss_ratio
-Pete the Panda,beginner,kind-hearted and lovable,7,13,73,93,0.7849462365591398
+Pete the Panda,beginner,kind-hearted and lovable,7,14,77,98,0.7857142857142857
 Katie the Koala,beginner,beautiful and creative,8,10,41,59,0.6949152542372882
 Ollie the Octopus,genius,intelligent and quick-witted,67,81,0,148,0.0
 Danni the Dolphin,genius,innovative and elegant,48,63,0,111,0.0
-Guest,,,21,4,4,29,0.13793103448275862
-Dayle,,,3,0,0,3,0.0
+Guest,,,24,4,4,32,0.125
+Dayle,,,4,1,0,5,0.0
 Gillian,,,1,0,0,1,0.0
 Joanne,,,1,0,0,1,0.0
 Jackie,,,1,0,0,1,0.0

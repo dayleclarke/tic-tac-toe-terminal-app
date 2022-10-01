@@ -66,13 +66,20 @@ class Player:
         return f"A player named: {self.name}."
 
 
-
 class UserPlayer(Player):
     """A class used to represent the user/human player."""
     def __init__(self, letter, name, username):
         super().__init__(letter, name)
-        self.username = username
-    
+        self.__username = username
+
+    @property
+    def username(self):
+        return self.__username
+
+    @username.setter
+    def username(self, username):
+        self.__username = username
+
     def update_scores(self, outcome):
         """Updates the player's win/tie/loss records.
 
