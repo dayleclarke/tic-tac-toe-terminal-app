@@ -105,4 +105,3 @@ def test_num_empty_squares():
     assert standard_board.num_empty_squares() == 9
     standard_board.board = ["X", "O", "O", "X", "O", "X", "X", "O", "X"]
     assert standard_board.num_empty_squares() == 0
-

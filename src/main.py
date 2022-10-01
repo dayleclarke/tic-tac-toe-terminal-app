@@ -9,6 +9,7 @@ from players import UserPlayer, EasyComputerPlayer, ExpertComputerPlayer
 from custom_exceptions import RangeError, OccupiedError
 from login import login, name_confirmation
 from board import TicTacToeBoard
+from ASCIItext import panda_ascii, koala_ascii, octopus_ascii, dolphin_ascii, fireworks_ascii, hand_gestures
 
 # Create constants with ASCII text in a seperate file. Make it a publically accessable class.  Make constants and push it into another file.
 
@@ -98,95 +99,27 @@ Here is a table outlining info about each player including their win, tie, and l
     opponent_name = opponent_name.split()[0]
 
     if opponent_name == "Pete":
-        print(
-            """⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⣰⣿⣿⣿⣿⣦⣀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⢿⣿⠟⠋⠉⠀⠀⠀⠀⠉⠑⠢⣄⡀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⢠⠞⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢿⣿⣿⣦⡀
-⠀⣀⠀⠀⢀⡏⠀⢀⣴⣶⣶⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⣿⣿⠇
-⣾⣿⣿⣦⣼⡀⠀⢺⣿⣿⡿⠃⠀⠀⠀⠀⣠⣤⣄⠀⠀⠈⡿⠋⠀
-⢿⣿⣿⣿⣿⣇⠀⠤⠌⠁⠀⡀⢲⡶⠄⢸⣏⣿⣿⠀⠀⠀⡇⠀⠀
-⠈⢿⣿⣿⣿⣿⣷⣄⡀⠀⠀⠈⠉⠓⠂⠀⠙⠛⠛⠠⠀⡸⠁⠀⠀
-⠀⠀⠻⣿⣿⣿⣿⣿⣿⣷⣦⣄⣀⠀⠀⠀⠀⠑⠀⣠⠞⠁⠀⠀⠀
-⠀⠀⠀⢸⡏⠉⠛⠛⠛⠿⠿⣿⣿⣿⣿⣿⣿⣿⣿⡄⠀⠀⠀⠀⠀
-⠀⠀⠀⠸⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠛⢿⣿⣿⣿⣿⡄⠀⠀⠀⠀
-⠀⠀⠀⢷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢻⣿⣿⣿⣿⡀⠀⠀⠀
-⠀⠀⠀⢸⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⡇⠀⠀⠀
-⠀⠀⠀⢸⣿⣦⣀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣼⡟⠻⠿⠟⠀⠀⠀⠀
-⠀⠀⠀⠀⣿⣿⣿⣿⣶⠶⠤⠤⢤⣶⣾⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠹⣿⣿⣿⠏⠀⠀⠀⠈⢿⣿⣿⡿⠁⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠈⠉⠉⠀⠀⠀⠀⠀⠀⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀"""
-        )
+        print(panda_ascii)
         print(Fore.CYAN + pyfiglet.figlet_format("Pete the Panda", font="digital"))
         pete_panda = EasyComputerPlayer("O", "Pete the Panda")
         opponent_player = pete_panda
     elif opponent_name == "Katie":
-        print(
-            """
-⢀⠔⠊⠉⠑⢄⠀⠀⣀⣀⠤⠤⠤⢀⣀⠀⠀⣀⠔⠋⠉⠒⡄⠀
-⡎⠀⠀⠀⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠉⠀⠀⠀⠀⠀⠘⡄
-⣧⢢⠀⠀⠀⠀⠀⠀⠀⠀⣀⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⢈⣆⡗
-⠘⡇⠀⢀⠆⠀⠀⣀⠀⢰⣿⣿⣧⠀⢀⡀⠀⠀⠘⡆⠀⠈⡏⠀
-⠀⠑⠤⡜⠀⠀⠈⠋⠀⢸⣿⣿⣿⠀⠈⠃⠀⠀⠀⠸⡤⠜⠀⠀
-⠀⠀⠀⣇⠀⠀⠀⠀⠀⠢⣉⢏⣡⠀⠀⠀⠀⠀⠀⢠⠇⠀⠀⠀
-⠀⠀⠀⠈⠢⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡤⠋⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⢨⠃⠀⢀⠀⢀⠔⡆⠀⠀⠀⠀⠻⡄⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⡎⠀⠀⠧⠬⢾⠊⠀⠀⢀⡇⠀⠀⠟⢆⠀⠀⠀⠀
-⠀⠀⠀⠀⢀⡇⠀⠀⡞⠀⠀⢣⣀⡠⠊⠀⠀⠀⢸⠈⣆⡀⠀⠀
-⠀⠀⡠⠒⢸⠀⠀⠀⡇⡠⢤⣯⠅⠀⠀⠀⢀⡴⠃⠀⢸⠘⢤⠀
-⠀⢰⠁⠀⢸⠀⠀⠀⣿⠁⠀⠙⡟⠒⠒⠉⠀⠀⠀⠀⠀⡇⡎⠀
-⠀⠘⣄⠀⠸⡆⠀⠀⣿⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀⢀⠟⠁⠀
-⠀⠀⠘⠦⣀⣷⣀⡼⠽⢦⡀⠀⠀⢀⣀⣀⣀⠤⠄⠒⠁⠀⠀⠀
-"""
-        )
+        print(koala_ascii)
         print(Fore.CYAN + pyfiglet.figlet_format("Katie the Koala", font="digital"))
         katie_koala = EasyComputerPlayer("O", "Katie the Koala")
         opponent_player = katie_koala
     elif opponent_name == "Ollie":
-        print("""
-                        ___
-                     .-'   `'.
-                    /         \\ 
-                    |         ;
-                    |         |           ___.--,
-           _.._     |0) ~ (0) |    _.---'`__.-( (_.
-    __.--'`_.. '.__.\\    '     \\_.-' ,.--'`     `""`
-   ( ,.--'`   ',__ /./;   ;, '.__.'`    __
-   _`) )  .---.__.' / |   |\\   \\__..--""  ""--.,_
-  `---' .'.''-._.-'`_./  /\\ '.  \\ _.-~~~````~~~-._`-.__.'
-        | |  .' _.-' |  |  \\  \\  '.               `~---`
-         \\ \\/ .'     \\  \\   '. '-._)
-          \\/ /        \\  \\    `=.__`~-.
-          / /\\         `) )    / / `"".`
-    , _.-'.'\\ \\        / /    ( (     / /
-     `--~`   ) )    .-'.'      '.'.  | (
-            (/`    ( (`          ) )  '-;
-             `      '-;         (-'
-        """
-        )
+        print(octopus_ascii)
         print(Fore.CYAN + pyfiglet.figlet_format("Ollie the Octopus", font="digital"))
         ollie_octopus = ExpertComputerPlayer("O", "Ollie the Octopus")
         opponent_player = ollie_octopus
     else:
-        print(
-                """
-    ⠀⠀⠀⠐⢿⣿⣿⣿⣿⣿⣶⣤⣤⣤⣤⣤⣀⠀⠀⠀⠀⠀⠀⠀
-    ⠀⠀⠀⠀⠀⠙⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⡀⠀⠀⠀⠀
-    ⠀⠀⠀⠀⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⠀⠀⠀
-    ⠀⠀⠀⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⠀
-    ⠀⠀⢰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⠿⠿⠿⠿⠿⠟⠃
-    ⠀⠀⢸⣿⣿⣿⣿⡿⠛⠉⠁⠀⢸⣿⠿⠁⠀⠀⠀⠀⠀⠀⠀⠀
-    ⠀⠀⢸⣿⣿⡿⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-    ⠀⠀⢸⣿⣿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-    ⢀⣾⣿⣿⣿⣷⣦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-    ⣾⣿⣿⣿⠿⣿⣿⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-    ⡿⠛⠉⠀⠀⠀⠈⠙⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"""
-            )
+        print(dolphin_ascii)
         print(Fore.CYAN + pyfiglet.figlet_format("Danni the Doplphin", font="digital"))
         danni_dolphin = ExpertComputerPlayer("O", "Danni the Dolphin")
         opponent_player = danni_dolphin
     print(
-        f"You have selected {opponent.name} as your opponent today.  Good choice."
+        f"You have selected {opponent_player.name} as your opponent today.  Good choice."
         )
     return opponent_player
 
@@ -205,32 +138,6 @@ def select_starting_player(user_player, computer_player):
         the starting player which will either be the user player or the
             computer player depending on who won scissors-paper-rock.
     """
-    hand_gestures = {
-        "rock": """
-    _______
----'   ____)
-      (_____)
-      (_____)
-      (____)
----.__(___)
-""",
-        "paper": """
-    _______
----'   ____)____
-          ______)
-          _______)
-         _______)
----.__________)
-""",
-        "scissors": """
-    _______
----'   ____)____
-          ______)
-       __________)
-      (____)
----.__(___)
-""",
-}
     print(Fore.CYAN + "We will begin by playing scissors-paper-rock to"
     "determine which player will start.")
     while True:
@@ -352,18 +259,7 @@ def play(game, x_player, o_player):
             if game.current_winner:
                 print("Congratulations!!!")
                 print(Fore.CYAN + pyfiglet.figlet_format("You Win!"))
-                print(Fore.CYAN +
-                    """
-                                   .''.
-       .''.      .        *''*    :_\\/_:     .
-      :_\\/_:   _\\(/_  .:.*_\\/_*   : /\\ :  .'.:.'.
-  .''.: /\\ :   ./)\\   ':'* /\\ * :  '..'.  -=:o:=-
- :_\\/_:'.:::.    ' *''*    * '.\'/.' _\\(/_'.':'.'
- : /\\ : :::::     *_\\/_*     -= o =-  /)\\    '  *
-  '..'  ':::'     * /\\ *     .'/.\\'.   '
-      *            *..*         :
-        *
-        """)
+                print(Fore.CYAN + fireworks_ascii)
                 o_player.update_scores("losses")
                 print(Fore.CYAN + pyfiglet.figlet_format("Top 10 Players", font="digital"))
                 print(x_player.update_scores("wins"))

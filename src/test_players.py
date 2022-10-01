@@ -42,7 +42,7 @@ class TestGetMoveUser:
             monkeypatch: an object imported from within pytest.
         """
         fake_input(monkeypatch,[1, 5, 9])
-        assert user_player_1.get_move(standard_board) == 0
+        assert user_player_1.get_move(standard_board) == 0 # One is subtracted form each.
         assert user_player_1.get_move(standard_board) == 4
         assert user_player_1.get_move(standard_board) == 8
 
