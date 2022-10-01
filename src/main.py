@@ -207,8 +207,11 @@ def select_starting_player(user_player, computer_player):
             starting_player = user_player
     return starting_player
 
-def clear_screen(game):
+def clear_screen(game, x_player, o_player):
     clearing.clear()
+    print(Fore.CYAN + pyfiglet.figlet_format("Tic Tac Toe"))
+    print("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n")
+    print(Fore.CYAN +f"{x_player.name} vs. {o_player.name}\n")
     standard_board.board_number_indices()
     game.print_board()
 
@@ -244,7 +247,7 @@ def play(game, x_player, o_player):
     input("Press the ENTER key when you are ready to begin.")
     # Game play will continue while there are free positions remaining
     while game.free_positions():
-        clear_screen(game)
+        clear_screen(game, x_player, o_player)
         if turn == x_player.name: # if it is player x's turn then:
             while True:
                 try:
@@ -259,10 +262,11 @@ def play(game, x_player, o_player):
                     " Please enter a number with no decimal places.")
             game.make_move(position, "X")
             if game.current_winner: # If that move made the X player the winner then:
-                clear_screen(game)
+                clear_screen(game, x_player, o_player)
                 print("Congratulations!!!")
                 print(Fore.CYAN + pyfiglet.figlet_format("You Win!"))
                 print(Fore.CYAN + FIREWORKS_IMG)
+                print("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n")
                 # Update the opponent's scores in the player_scores.csv file.
                 o_player.update_scores("losses")
                 print(Fore.CYAN + pyfiglet.figlet_format("Top 10 Players", font="digital"))
@@ -277,16 +281,17 @@ def play(game, x_player, o_player):
             time.sleep(1.5)
             game.make_move(position, "O")              
             if game.current_winner:
-                clear_screen(game)
+                clear_screen(game, x_player, o_player)
                 print(f"Better luck next time! {o_player.name} won the game.\n")
                 o_player.update_scores("wins")
+                print("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n")
                 print(Fore.CYAN + pyfiglet.figlet_format("Top 10 Players", font="digital"))
                 print(x_player.update_scores("losses"))
                 break
             turn = x_player.name
             continue
     else:
-        clear_screen(game)
+        clear_screen(game, x_player, o_player)
         print(Fore.CYAN + "It's a tie!")
         o_player.update_scores("ties")
         print(Fore.CYAN + pyfiglet.figlet_format("Top 10 Players", font="digital"))
@@ -312,7 +317,7 @@ if __name__ == "__main__":
         opponent = select_opponent()  # User selects difficulty level and choses an opponent
         play(standard_board, user_player_1, opponent)
         play_again = input(Fore.CYAN +
-            "Thanks for playing today. Would you like to play again? (yes/no): "
+            "\nThanks for playing today. Would you like to play again? (yes/no): "
         )
         if play_again.lower().strip().startswith("y"):
             continue
