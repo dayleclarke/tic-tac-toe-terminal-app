@@ -8,12 +8,13 @@ Functions:
 
 """
 import pytest
-from main import UserPlayer, ExpertComputerPlayer, TicTacToeBoard
+from main import UserPlayer, ExpertComputerPlayer, TicTacToeBoard, EasyComputerPlayer
 from players import RangeError, OccupiedError
 
 
 user_player_1 = UserPlayer("X", "Dayle", "Dayle01")
 ollie_octopus = ExpertComputerPlayer("O", "Ollie the Octopus")
+pete_panda = EasyComputerPlayer("O", "Pete the Panda")
 standard_board = TicTacToeBoard()
 
 def fake_input(monkeypatch, user_input):
@@ -97,6 +98,31 @@ class TestGetMoveUser:
         with pytest.raises(OccupiedError):
             user_player_1.get_move(standard_board)
 
+
+def test_easy_player_get_move ():
+    """A class used to test get_move() method of the
+    EasyComputerPlayer.
+    """
+    def test_easy_get_move():
+        petes_move = pete_panda.get_move(standard_board)
+        move_from_free_positions = False
+        for position in free_spots:
+            if position == petes_move:
+                move_from_free_positions = True
+        assert move_from_free_positions is True
+    free_spots = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+    test_easy_get_move()
+    standard_board.board = ["X", " ", " ", "X", "O", " ", "X", " ", " "]
+    free_spots = [1, 2, 5, 7, 8]
+    test_easy_get_move()
+    standard_board.board = [" ", " ", "O ", "X", "O", "O", "X", "O", " "]
+    free_spots = [0, 1, 8]
+    test_easy_get_move()
+    standard_board.board = ["X", "O ", " ", "X", "O", "O", "X", " ", "X"]
+    free_spots = [2, 7]
+    test_easy_get_move()
+
+
 class TestGetMoveExpertComp:
     """A class used to test get_move() method of the
     ExpertComputerPlayer.
@@ -128,7 +154,7 @@ class TestGetMoveExpertComp:
         # place their marker at position 6. It is important to take
         # this win before blocking the opponents win (at position 5).
         assert ollie_octopus.get_move(standard_board) == 6
-    
+
     def test_block_obvious_loss(self):
         """Test player takes the position to block the other player
         winning.

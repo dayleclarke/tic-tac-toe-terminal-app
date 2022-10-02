@@ -215,6 +215,7 @@ def clear_screen(game, x_player, o_player):
     standard_board.board_number_indices()
     game.print_board()
 
+
 def play(game, x_player, o_player):
     """A function used to play one complete game of TicTacToe.
 
