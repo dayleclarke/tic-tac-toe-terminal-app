@@ -2,7 +2,7 @@ class RangeError(Exception):
     """An error raised when an integer is outside of the valid range."""
     def __init__(self, val):
         super().__init__(
-            f"{val} is not a valid position on the board. The number must be between 0 and 8.")
+            "That is not a valid position on the board. The number must be between 1 and 9.")
 
 
 class OccupiedError(Exception):

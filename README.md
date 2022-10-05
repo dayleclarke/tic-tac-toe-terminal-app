@@ -27,7 +27,7 @@ The user can select to play on easy mode against a computer-controlled player.  
 
 ### 2. An Expert mode Person vs. Environment (PvE)
 
-The user can select to play on expert mode against a computer-controlled player.  The expert computer player will select the optimal position to place their marker each time.  It is an unbeatable player which will either win or tie all games. When an expert play goes first it will position their marker in one of the corner positions. At all other times this player will invoke a recursive minimax function to return the optimal position based which position has the highest utility score (after testing all the possible free moves on the board).  There are two expert computer players the user can select from: Ollie the Octopus and Danni the Dolphin (both known to be highly intelligent animals).
+The user can select to play on expert mode against a computer-controlled player.  The expert computer player will select the optimal position to place their marker each time.  It is an unbeatable player which will either win or tie all games. When an expert player goes first it will position their marker in one of the corner positions. At all other times this player will invoke a recursive minimax function to return the optimal position based which position has the highest utility score (after testing all the possible free moves on the board).  There are two expert computer players the user can select from: Ollie the Octopus and Danni the Dolphin (both known to be highly intelligent animals).
 
 ### 3.  Game play order is determined by the outcome of a Scissor’s-Paper-Rock game
 

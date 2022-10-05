@@ -6,13 +6,13 @@ then
     pyv="$(python3 -V 2>&1)"
     if [[ $pyv == "Python 3"* ]]
     then
-        echo "You have the correct version of python installed."
+        echo "You have the correct version of Python installed."
     else
-        echo "You have an outdated version of python. Please update your version of python." >&2
+        echo "You have an outdated version of Python. Please update Python." >&2
         
     fi 
 else
-    echo "You don't have python, please install it to run the application!" >&2
+    echo "You don't have Python, please install it to run the application!" >&2
 fi
 echo "First I will create a virtual environment using the standard name .venv"
 python3 -m venv .venv 
